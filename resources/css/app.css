@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #5c62f9;
+  --color-primary-dark: #4e53e2;
+  --color-secondary: #f3f5fa;
+  --color-dark-navy: #1e224f;
+  --color-muted-gray: #8f96b4;
+}
+
+@utility shadow-premium {
+  box-shadow: 0px 12px 30px rgba(92, 98, 249, 0.08);
+}
+
+@utility shadow-navbar {
+  box-shadow: 0px -5px 25px rgba(92, 98, 249, 0.06);
+}
+
+body {
+  background: radial-gradient(circle at top, #1e1b4b 0%, #090514 100%);
+  min-height: 100vh;
+}

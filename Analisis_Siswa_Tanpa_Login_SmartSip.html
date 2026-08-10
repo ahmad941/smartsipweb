@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Usulan Arsitektur - Akses Siswa Tanpa Login SmartSip</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm 15mm 20mm 15mm;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1e293b;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px 30px;
+            background: #ffffff;
+        }
+        .header {
+            border-b: 3px solid #3b82f6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        .doc-meta {
+            text-align: right;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e3a8a;
+            border-left: 4px solid #3b82f6;
+            padding-left: 10px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        p {
+            font-size: 12px;
+            color: #334155;
+            margin-bottom: 10px;
+        }
+        .box {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 15px;
+        }
+        .box-primary {
+            background-color: #eff6ff;
+            border-color: #bfdbfe;
+        }
+        .box-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1d4ed8;
+            margin-bottom: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            font-weight: 700;
+        }
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .badge-green { background-color: #dcfce7; color: #15803d; }
+        .badge-blue { background-color: #dbeafe; color: #1e40af; }
+        .badge-amber { background-color: #fef3c7; color: #b45309; }
+        .footer {
+            margin-top: 40px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 12px;
+            color: #334155;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <div class="logo-title">SMARTSIP SYSTEM ARCHITECTURE</div>
+            <div class="subtitle">Dokumen Analisis & Usulan: Akses Fitur Siswa Tanpa Login</div>
+        </div>
+        <div class="doc-meta">
+            Tanggal: 4 Agustus 2026<br>
+            Status: Draft Rencana Arsitektur<br>
+            Target Pengguna: Tim Pengembang & Atasan
+        </div>
+    </div>
+
+    <div class="section-title">1. Latar Belakang & Tujuan</div>
+    <p>
+        Berdasarkan arahan pimpinan/atasan, aplikasi SmartSip akan disesuaikan agar <strong>siswa tidak perlu melakukan proses login (Email & Password)</strong> untuk menggunakan aplikasi dan melakukan berbagai aktivitas (Log Gula Harian, Edukasi & Kuis, Challenge, serta Pengisian Survei FFQ/TPB/Knowledge/SUS).
+    </p>
+    <p>
+        Tujuan utama dokumen ini adalah memberikan pilihan mekanisme arsitektur perangkat lunak yang dapat diterapkan tanpa mengurangi keabsahan dan kelengkapan data riset bagi tim peneliti/admin.
+    </p>
+
+    <div class="section-title">2. Pilihan Arsitektur Implikasi Teknis</div>
+
+    <div class="box box-primary">
+        <div class="box-title">Opsi A: Mode Guest / Auto-Session (Rekomendasi Utama ⭐)</div>
+        <p><strong>Mekanisme:</strong> Siswa membuka tautan web → Sistem otomatis menetapkan ID Sesi unik di browser HP siswa. Saat pertama kali dibuka, siswa diminta mengisi Form Identitas Singkat (Nama/Inisial, Sekolah, Kelas, Umur, Jenis Kelamin). Setelah itu siswa dapat langsung beraktivitas.</p>
+        <ul>
+            <li><strong>Kelebihan:</strong> Zero-login (sangat ramah anak/siswa), tidak ada kendala lupa password. Data penelitian tetap tersimpan rapi per individu dan dapat di-export lengkap ke Excel oleh Admin/Peneliti.</li>
+            <li><strong>Pertimbangan:</strong> Data sesi terikat pada browser HP yang digunakan siswa.</li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <div class="box-title">Opsi B: Login Instan via Kode Kelas / QR Code</div>
+        <p><strong>Mekanisme:</strong> Guru membagikan Kode Kelas atau QR Code. Siswa membuka web lalu cukup memasukkan Kode Kelas dan Nomor Absen / Nama Singkat (tanpa password).</p>
+        <ul>
+            <li><strong>Kelebihan:</strong> Data terkelompokkan dengan sangat rapi per sekolah & kelas. Jika siswa berpindah HP, siswa dapat masuk kembali dengan mudah tanpa menghafal email/password.</li>
+            <li><strong>Pertimbangan:</strong> Membutuhkan pembuatan Kode Kelas oleh Guru/Admin terlebih dahulu.</li>
+        </ul>
+    </div>
+
+    <div class="box">
+        <div class="box-title">Opsi C: Akses Form Bebas (Public Access)</div>
+        <p><strong>Mekanisme:</strong> Menonaktifkan seluruh proteksi autentikasi pada fitur siswa sehingga siapa saja bisa mengisi secara publik.</p>
+        <ul>
+            <li><strong>Kelebihan:</strong> Akses paling cepat tanpa form identitas awal.</li>
+            <li><strong>Pertimbangan:</strong> Fitur akumulasi poin harian (Leaderboard, Log Gula Berkelanjutan, Challenge) tidak dapat melacak akumulasi progres siswa individu.</li>
+        </ul>
+    </div>
+
+    <div class="section-title">3. Matriks Perbandingan Fitur & Dampak Arsitektur</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Kriteria Evaluasi</th>
+                <th>Sistem Saat Ini (Email/Pass)</th>
+                <th>Opsi A (Guest Auto-Session)</th>
+                <th>Opsi B (Kode Kelas/QR)</th>
+                <th>Opsi C (Publik Bebas)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Kemudahan Akses Siswa</strong></td>
+                <td><span class="badge badge-amber">Cukup Rumit</span></td>
+                <td><span class="badge badge-green">Sangat Mudah</span></td>
+                <td><span class="badge badge-green">Mudah</span></td>
+                <td><span class="badge badge-green">Sangat Mudah</span></td>
+            </tr>
+            <tr>
+                <td><strong>Integritas Data Riset Admin</strong></td>
+                <td><span class="badge badge-blue">Lengkap & Valid</span></td>
+                <td><span class="badge badge-blue">Lengkap & Valid</span></td>
+                <td><span class="badge badge-blue">Sangat Rapi per Kelas</span></td>
+                <td><span class="badge badge-amber">Anonim / Terpisah</span></td>
+            </tr>
+            <tr>
+                <td><strong>Fungsi Leaderboard & Point</strong></td>
+                <td><span class="badge badge-blue">Berjalan Penuh</span></td>
+                <td><span class="badge badge-blue">Berjalan di HP Siswa</span></td>
+                <td><span class="badge badge-blue">Berjalan Penuh</span></td>
+                <td><span class="badge badge-amber">Terbatas</span></td>
+            </tr>
+            <tr>
+                <td><strong>Ekspor Data ke Excel</strong></td>
+                <td><span class="badge badge-green">Didukung</span></td>
+                <td><span class="badge badge-green">Didukung</span></td>
+                <td><span class="badge badge-green">Didukung</span></td>
+                <td><span class="badge badge-amber">Terbatas</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-title">4. Rekomendasi & Langkah Implikasi</div>
+    <p>
+        Tim Pengembang merokomendasikan <strong>Opsi A (Guest Auto-Session)</strong> atau <strong>Opsi B (Kode Kelas/QR)</strong> karena kedua pilihan tersebut memenuhi 100% arahan pimpinan untuk <em>menghilangkan hambatan login bagi siswa</em>, sekaligus menjaga agar data penelitian kesehatan SmartSip tetap berkualitas tinggi.
+    </p>
+
+    <div class="footer">
+        Dokumen ini dibuat secara otomatis oleh SmartSip System Development Team &bull; c:\laragon\www\smartsip
+    </div>
+
+</body>
+</html>
