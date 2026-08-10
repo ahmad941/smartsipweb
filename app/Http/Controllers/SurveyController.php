@@ -85,7 +85,7 @@ class SurveyController extends Controller
         $rules = [];
         foreach ($beverages as $idx => $b) {
             $rules["freq.{$idx}"] = 'required|in:0,1,2,3,4';
-            $rules["portion.{$idx}"] = 'required|in:250,500,750';
+            $rules["portion.{$idx}"] = 'required|in:250,350,450';
         }
 
         $validated = $request->validate($rules);

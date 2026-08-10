@@ -36,7 +36,7 @@
                         </div>
                         <h4 class="text-base font-extrabold text-slate-800">Identitas & Antropometri</h4>
                         <p class="text-xs text-slate-500 leading-relaxed">
-                            10 Poin data demografi, Nickname, Usia, Gender, Sekolah Mitra, Kelas, Tinggi (cm), Berat (kg), IMT, Lemak BIA %, Uang Saku, & Edukasi Ortu.
+                            10 Poin data demografi, Nama Lengkap, Usia, Gender, Sekolah Mitra, Kelas, Tinggi (cm), Berat (kg), IMT, Lemak BIA %, Uang Saku, & Edukasi Ortu.
                         </p>
                     </div>
                     <a href="{{ route('admin.exports.demographics') }}" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 text-center flex items-center justify-center gap-2">

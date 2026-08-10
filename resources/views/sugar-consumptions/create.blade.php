@@ -74,9 +74,20 @@
                             class="block w-full h-12 pl-4 pr-12 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 shadow-inner" />
                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-muted-gray text-xs font-bold">ml</div>
                     </div>
-                    <p class="mt-1.5 text-[9px] text-muted-gray leading-normal">
-                        Info: Gelas mineral ukuran sedang biasanya berisi sekitar 240ml.
+                    <p class="mt-1.5 text-[10px] text-muted-gray leading-normal">
+                        Info acuan: Gelas kecil (250 ml), Gelas sedang (350 ml), Gelas besar (450 ml).
                     </p>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                        <button type="button" onclick="document.getElementById('volume_ml').value = 250" class="px-2.5 py-1 text-[11px] font-bold text-slate-600 bg-slate-100 hover:bg-primary/10 hover:text-primary rounded-lg border border-slate-200 transition-all cursor-pointer">
+                            Gelas Kecil (250ml)
+                        </button>
+                        <button type="button" onclick="document.getElementById('volume_ml').value = 350" class="px-2.5 py-1 text-[11px] font-bold text-slate-600 bg-slate-100 hover:bg-primary/10 hover:text-primary rounded-lg border border-slate-200 transition-all cursor-pointer">
+                            Gelas Sedang (350ml)
+                        </button>
+                        <button type="button" onclick="document.getElementById('volume_ml').value = 450" class="px-2.5 py-1 text-[11px] font-bold text-slate-600 bg-slate-100 hover:bg-primary/10 hover:text-primary rounded-lg border border-slate-200 transition-all cursor-pointer">
+                            Gelas Besar (450ml)
+                        </button>
+                    </div>
                     @error('volume_ml')
                         <p class="mt-1.5 text-xs text-rose-500 font-bold">{{ $message }}</p>
                     @enderror

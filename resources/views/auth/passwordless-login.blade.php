@@ -33,7 +33,7 @@
             <label for="email" class="block text-xs font-extrabold text-muted-gray uppercase tracking-wider mb-2">Alamat Email Siswa</label>
             <div class="relative">
                 <input id="email" class="block w-full h-12 pl-11 pr-4 bg-slate-50 border border-slate-200 rounded-xl text-dark-navy text-sm font-semibold placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 shadow-inner" 
-                    type="email" name="email" :value="old('email')" placeholder="contoh: nama.siswa@gmail.com" required autofocus autocomplete="username" />
+                    type="email" name="email" :value="old('email')" placeholder="contoh: nama.siswa@gmail.com" required autofocus autocomplete="email" />
                 <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />

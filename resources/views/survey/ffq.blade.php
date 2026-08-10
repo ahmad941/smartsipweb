@@ -60,12 +60,12 @@
                                 <span class="text-xs font-bold text-dark-navy">Kecil <span class="text-[9px] text-muted-gray">(250ml)</span></span>
                             </label>
                             <label class="flex items-center justify-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100">
-                                <input type="radio" name="portion[{{ $index }}]" value="500" class="text-primary focus:ring-primary w-3.5 h-3.5" />
-                                <span class="text-xs font-bold text-dark-navy">Sedang <span class="text-[9px] text-muted-gray">(500ml)</span></span>
+                                <input type="radio" name="portion[{{ $index }}]" value="350" class="text-primary focus:ring-primary w-3.5 h-3.5" />
+                                <span class="text-xs font-bold text-dark-navy">Sedang <span class="text-[9px] text-muted-gray">(350ml)</span></span>
                             </label>
                             <label class="flex items-center justify-center gap-1.5 p-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100">
-                                <input type="radio" name="portion[{{ $index }}]" value="750" class="text-primary focus:ring-primary w-3.5 h-3.5" />
-                                <span class="text-xs font-bold text-dark-navy">Besar <span class="text-[9px] text-muted-gray">(750ml)</span></span>
+                                <input type="radio" name="portion[{{ $index }}]" value="450" class="text-primary focus:ring-primary w-3.5 h-3.5" />
+                                <span class="text-xs font-bold text-dark-navy">Besar <span class="text-[9px] text-muted-gray">(450ml)</span></span>
                             </label>
                         </div>
                     </div>

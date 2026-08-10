@@ -115,7 +115,7 @@
                         <table class="w-full text-left text-xs">
                             <thead class="sticky top-0 z-10">
                                 <tr class="border-b border-slate-150 text-slate-400 uppercase tracking-wider font-extrabold text-[10px] bg-white">
-                                    <th class="pb-3 pl-2">Siswa (Pseudonym)</th>
+                                    <th class="pb-3 pl-2">Nama Siswa</th>
                                     <th class="pb-3">Sekolah & Kelas</th>
                                     <th class="pb-3 text-center w-16">IMT</th>
                                     <th class="pb-3 text-right w-28">Gula Hari Ini</th>

@@ -16,6 +16,10 @@
             <p class="text-xs text-muted-gray mt-1 leading-relaxed">
                 Kami membutuhkan data fisikmu untuk mengukur Indeks Massa Tubuh (IMT) secara akurat.
             </p>
+            <div class="mt-2.5 inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-100 border border-slate-200 rounded-full text-[11px] font-semibold text-slate-600 shadow-sm">
+                <span>📧 Akun Aktif:</span>
+                <strong class="text-primary font-bold">{{ Auth::user()->email }}</strong>
+            </div>
         </div>
 
         <!-- Form Card -->
@@ -25,10 +29,10 @@
                 
                 <!-- Nickname -->
                 <div>
-                    <label for="nickname" class="block text-xs font-extrabold text-muted-gray uppercase tracking-wider mb-2">Nama Samaran (Nickname) *</label>
-                    <input type="text" id="nickname" name="nickname" value="{{ old('nickname') }}" placeholder="Cth: Z-Warrior" required 
+                    <label for="nickname" class="block text-xs font-extrabold text-muted-gray uppercase tracking-wider mb-2">Nama Lengkap *</label>
+                    <input type="text" id="nickname" name="nickname" value="{{ old('nickname') }}" placeholder="Cth: Deny Septian" required 
                         class="block w-full h-12 px-4 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300" />
-                    <p class="mt-1 text-[10px] text-muted-gray leading-normal">Digunakan sebagai nama samaran di papan peringkat riset untuk keamanan datamu.</p>
+                    <p class="mt-1 text-[10px] text-muted-gray leading-normal">Masukkan nama lengkapmu untuk profil di aplikasi SmartSip.</p>
                     @error('nickname')
                         <p class="mt-1.5 text-xs text-rose-500 font-bold">{{ $message }}</p>
                     @enderror
@@ -41,7 +45,7 @@
                         <div class="relative">
                             <select id="school_id" name="school_id" required 
                                 class="block w-full h-12 pl-4 pr-8 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 cursor-pointer shadow-inner">
-                                <option value="" disabled selected class="text-slate-400">Pilih...</option>
+                                <option value="" disabled {{ old('school_id') ? '' : 'selected' }} class="text-slate-400">Pilih...</option>
                                 @foreach($schools as $school)
                                     <option value="{{ $school->id }}" {{ old('school_id') == $school->id ? 'selected' : '' }}>
                                         {{ $school->name }}
@@ -62,7 +66,7 @@
                         <div class="relative">
                             <select id="class_id" name="class_id" required 
                                 class="block w-full h-12 pl-4 pr-8 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 cursor-pointer shadow-inner">
-                                <option value="" disabled selected class="text-slate-400">Pilih...</option>
+                                <option value="" disabled {{ old('class_id') ? '' : 'selected' }} class="text-slate-400">Pilih...</option>
                                 @foreach($classes as $class)
                                     <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
                                         {{ $class->name }}
@@ -86,7 +90,7 @@
                         <div class="relative">
                             <select id="gender" name="gender" required 
                                 class="block w-full h-12 pl-4 pr-8 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 cursor-pointer shadow-inner">
-                                <option value="" disabled selected class="text-slate-400">Pilih...</option>
+                                <option value="" disabled {{ old('gender') ? '' : 'selected' }} class="text-slate-400">Pilih...</option>
                                 <option value="L" {{ old('gender') == 'L' ? 'selected' : '' }}>Laki-laki</option>
                                 <option value="P" {{ old('gender') == 'P' ? 'selected' : '' }}>Perempuan</option>
                             </select>
@@ -154,7 +158,7 @@
                     <div class="relative">
                         <select id="pocket_money" name="pocket_money" required 
                             class="block w-full h-12 pl-4 pr-8 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 cursor-pointer shadow-inner">
-                            <option value="" disabled selected class="text-slate-400">Pilih Uang Saku...</option>
+                            <option value="" disabled {{ old('pocket_money') ? '' : 'selected' }} class="text-slate-400">Pilih Uang Saku...</option>
                             <option value="< Rp10.000" {{ old('pocket_money') == '< Rp10.000' ? 'selected' : '' }}>&lt; Rp10.000</option>
                             <option value="Rp10.000–20.000" {{ old('pocket_money') == 'Rp10.000–20.000' ? 'selected' : '' }}>Rp10.000 – Rp20.000</option>
                             <option value="Rp21.000–30.000" {{ old('pocket_money') == 'Rp21.000–30.000' ? 'selected' : '' }}>Rp21.000 – Rp30.000</option>
@@ -176,7 +180,7 @@
                         <div class="relative">
                             <select id="father_education" name="father_education" required 
                                 class="block w-full h-12 pl-4 pr-8 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 cursor-pointer shadow-inner">
-                                <option value="" disabled selected class="text-slate-400">Pilih...</option>
+                                <option value="" disabled {{ old('father_education') ? '' : 'selected' }} class="text-slate-400">Pilih...</option>
                                 <option value="SD" {{ old('father_education') == 'SD' ? 'selected' : '' }}>SD / Sederajat</option>
                                 <option value="SMP" {{ old('father_education') == 'SMP' ? 'selected' : '' }}>SMP / Sederajat</option>
                                 <option value="SMA/SMK" {{ old('father_education') == 'SMA/SMK' ? 'selected' : '' }}>SMA / SMK</option>
@@ -197,7 +201,7 @@
                         <div class="relative">
                             <select id="mother_education" name="mother_education" required 
                                 class="block w-full h-12 pl-4 pr-8 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 cursor-pointer shadow-inner">
-                                <option value="" disabled selected class="text-slate-400">Pilih...</option>
+                                <option value="" disabled {{ old('mother_education') ? '' : 'selected' }} class="text-slate-400">Pilih...</option>
                                 <option value="SD" {{ old('mother_education') == 'SD' ? 'selected' : '' }}>SD / Sederajat</option>
                                 <option value="SMP" {{ old('mother_education') == 'SMP' ? 'selected' : '' }}>SMP / Sederajat</option>
                                 <option value="SMA/SMK" {{ old('mother_education') == 'SMA/SMK' ? 'selected' : '' }}>SMA / SMK</option>

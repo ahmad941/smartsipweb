@@ -29,7 +29,7 @@
         <div>
             <label for="email" class="block text-xs font-extrabold text-muted-gray uppercase tracking-wider mb-2">{{ __('Email Address') }}</label>
             <input id="email" class="block w-full h-12 px-4 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-300 shadow-inner" 
-                type="email" name="email" :value="old('email')" placeholder="you@example.com" required autofocus autocomplete="username" />
+                type="email" name="email" :value="old('email')" placeholder="you@example.com" required autofocus autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-1.5 text-xs text-rose-500 font-bold" />
         </div>
 

@@ -95,6 +95,12 @@
                         </h3>
                     </div>
 
+                    @if (session('error'))
+                        <div class="p-3 bg-rose-50 border border-rose-200 text-rose-600 rounded-xl text-xs font-bold">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <!-- Form -->
                     <form method="POST" action="{{ route('siswa.login.store') }}" class="space-y-3">
                         @csrf
@@ -106,7 +112,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                                 </svg>
                             </div>
-                            <input type="email" name="email" required placeholder="Ketik emailmu (cth: siswa@gmail.com)"
+                            <input type="email" id="email" name="email" required autocomplete="email" placeholder="Ketik emailmu (cth: siswa@gmail.com)"
                                 class="w-full h-11 py-2.5 pr-3 bg-transparent text-dark-navy text-xs font-bold placeholder-slate-400 border-none outline-none focus:outline-none focus:ring-0" />
                         </div>
 
@@ -163,9 +169,9 @@
                     <div>
                         <label class="block text-[10px] font-extrabold text-muted-gray uppercase tracking-wider mb-2">🥤 Ukuran Porsi</label>
                         <select x-model.number="volume" class="block w-full h-11 px-3 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs focus:outline-none cursor-pointer">
-                            <option value="250">Gelas Sedang (250 ml)</option>
-                            <option value="350">Kaleng Sedang (350 ml)</option>
-                            <option value="500">Gelas Besar (500 ml)</option>
+                            <option value="250">Gelas Kecil (250 ml)</option>
+                            <option value="350">Gelas Sedang (350 ml)</option>
+                            <option value="450">Gelas Besar (450 ml)</option>
                         </select>
                     </div>
                 </div>

@@ -33,7 +33,7 @@ class AdminExportController extends Controller
         $students = Student::with(['user', 'school', 'schoolClass'])->get();
 
         $csvHeader = [
-            'User_ID', 'Nama_Lengkap', 'Email', 'Nickname_Responden', 'Jenis_Kelamin',
+            'User_ID', 'Nama_Lengkap_User', 'Email', 'Nama_Lengkap_Siswa', 'Jenis_Kelamin',
             'Tanggal_Lahir', 'Umur_Tahun', 'Sekolah', 'Kelompok_Penelitian', 'Kelas',
             'Tinggi_cm', 'Berat_kg', 'BMI_Score', 'Body_Fat_Percentage_BIA',
             'Uang_Saku_per_Hari', 'Pendidikan_Ayah', 'Pendidikan_Ibu', 'Informed_Consent', 'Tanggal_Daftar'
@@ -81,7 +81,7 @@ class AdminExportController extends Controller
         $responses = FfqResponse::with(['student.user', 'student.school'])->get();
 
         $csvHeader = [
-            'Response_ID', 'Student_ID', 'Nickname', 'Sekolah', 'Fase',
+            'Response_ID', 'Student_ID', 'Nama_Lengkap', 'Sekolah', 'Fase',
             'Total_Sugar_Grams_per_Day', 'Kategori_Konsumsi', 'Detail_Items_JSON', 'Tanggal_Isi'
         ];
 
@@ -117,7 +117,7 @@ class AdminExportController extends Controller
         $responses = TpbResponse::with(['student.user', 'student.school', 'question'])->get();
 
         $csvHeader = [
-            'Response_ID', 'Student_ID', 'Nickname', 'Sekolah', 'Question_ID',
+            'Response_ID', 'Student_ID', 'Nama_Lengkap', 'Sekolah', 'Question_ID',
             'Construct_Type', 'Question_Text', 'Likert_Score', 'Fase', 'Tanggal_Isi'
         ];
 
@@ -154,7 +154,7 @@ class AdminExportController extends Controller
         $responses = KnowledgeResponse::with(['student.user', 'student.school'])->get();
 
         $csvHeader = [
-            'Response_ID', 'Student_ID', 'Nickname', 'Sekolah', 'Fase',
+            'Response_ID', 'Student_ID', 'Nama_Lengkap', 'Sekolah', 'Fase',
             'Score_Total', 'Kategori_Pengetahuan', 'Detail_Answers_JSON', 'Tanggal_Isi'
         ];
 
@@ -190,7 +190,7 @@ class AdminExportController extends Controller
         $responses = UsabilityResponse::with(['student.user', 'student.school'])->get();
 
         $csvHeader = [
-            'Response_ID', 'Student_ID', 'Nickname', 'Sekolah',
+            'Response_ID', 'Student_ID', 'Nama_Lengkap', 'Sekolah',
             'Item_1_Mudah_Dipelajari', 'Item_2_Menu_Mudah_Dipahami', 'Item_3_Tampilan_Menarik',
             'Item_4_Informasi_Jelas', 'Item_5_Mandiri_Tanpa_Bantuan', 'Item_6_Fitur_Berjalan_Baik',
             'Item_7_Nyaman_Digunakan', 'Item_8_Ingin_Terus_Pakai', 'Item_9_Rekomendasi_Teman',
@@ -238,7 +238,7 @@ class AdminExportController extends Controller
         $logs = SugarConsumption::with(['user.student.school', 'beverage'])->get();
 
         $csvHeader = [
-            'Log_ID', 'User_ID', 'Nama_Responden', 'Nickname', 'Sekolah',
+            'Log_ID', 'User_ID', 'Nama_User', 'Nama_Lengkap_Siswa', 'Sekolah',
             'Nama_Minuman', 'Volume_ml', 'Total_Gula_Gram', 'Tanggal_Waktu_Konsumsi'
         ];
 

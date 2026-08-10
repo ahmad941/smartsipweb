@@ -81,9 +81,9 @@
                     <x-input-error class="mt-1" :messages="$errors->get('class_id')" />
                 </div>
 
-                <!-- Nama Samaran (Nickname) -->
+                <!-- Nama Lengkap -->
                 <div>
-                    <label for="nickname" class="block text-xs font-extrabold text-slate-800 mb-1.5">Nama Samaran (Nickname)</label>
+                    <label for="nickname" class="block text-xs font-extrabold text-slate-800 mb-1.5">Nama Lengkap</label>
                     <div class="relative">
                         <input type="text" id="nickname" name="nickname" value="{{ old('nickname', $user->student->nickname) }}"
                             class="w-full h-12 pl-4 pr-10 bg-white border border-slate-200 rounded-2xl text-xs font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
