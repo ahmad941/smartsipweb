@@ -76,18 +76,84 @@
                 Pantau asupan gula harianmu secara instan, selesaikan misi sehat bersama teman sekelas, kumpulkan poin, dan pelajari edukasi gizi dengan cara yang interaktif.
             </p>
 
+            <!-- Instant Student Access Card (Tanpa Password) -->
+            <div id="akses-siswa" class="relative group max-w-lg w-full mt-6">
+                <!-- Glowing Aura -->
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary via-indigo-500 to-cyan-400 rounded-3xl blur-xl opacity-40 group-hover:opacity-75 transition-all duration-300"></div>
+                
+                <!-- Main Card Body -->
+                <div class="relative bg-white rounded-3xl p-5 sm:p-7 border border-slate-200 shadow-xl overflow-hidden space-y-4">
+                    
+                    <!-- Title -->
+                    <div class="space-y-1 text-left">
+                        <h3 class="text-xl sm:text-2xl font-black text-dark-navy tracking-tight leading-snug">
+                            Mulai Perjalanan Sehatmu 
+                            <span style="background: linear-gradient(135deg, #3b82f6 0%, #4f46e5 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">Sekarang!</span>
+                        </h3>
+                    </div>
+
+                    <!-- Form -->
+                    <form method="POST" action="{{ route('siswa.login.store') }}" class="space-y-3">
+                        @csrf
+                        
+                        <!-- Flex Input Wrapper -->
+                        <div class="flex items-center w-full bg-slate-50 border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary/40 focus-within:border-primary transition-all">
+                            <div class="pl-3.5 pr-1 text-primary shrink-0 flex items-center justify-center">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                </svg>
+                            </div>
+                            <input type="email" name="email" required placeholder="Ketik emailmu (cth: siswa@gmail.com)"
+                                class="w-full h-11 py-2.5 pr-3 bg-transparent text-dark-navy text-xs font-bold placeholder-slate-400 border-none outline-none focus:outline-none focus:ring-0" />
+                        </div>
+
+                        <!-- CTA Button -->
+                        <button type="submit" class="w-full h-11 sm:h-12 px-5 rounded-xl text-xs font-black text-white bg-gradient-to-r from-primary via-indigo-600 to-cyan-600 hover:from-primary-dark hover:to-indigo-700 transition-all duration-200 shadow-md shadow-primary/25 active:scale-[0.98] flex items-center justify-center gap-2">
+                            <span>🚀 Masuk / Daftar Sekarang</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </form>
+
+                    <!-- Footer Link -->
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-end text-[11px] font-bold">
+                        <a href="{{ route('login') }}" class="text-slate-400 hover:text-primary transition-colors flex items-center gap-1">
+                            <span>Login Guru/Admin</span>
+                            <span>&rarr;</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- Interactive Widget Card (Matches Booking Widget) -->
-            <div id="calculator" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium max-w-lg relative overflow-hidden" x-data="sugarCalculator()">
+            <div id="calculator" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium max-w-lg relative overflow-hidden mt-6" x-data="sugarCalculator()">
+
                 <div class="grid grid-cols-2 gap-4">
                     <!-- Pick a Drink -->
                     <div>
                         <label class="block text-[10px] font-extrabold text-muted-gray uppercase tracking-wider mb-2">🍹 Pilih Minuman</label>
                         <select x-model="drink" class="block w-full h-11 px-3 bg-slate-50 border border-slate-150 rounded-xl text-dark-navy text-xs focus:outline-none cursor-pointer">
-                            <option value="boba">Boba Milk Tea</option>
-                            <option value="soda">Minuman Bersoda</option>
-                            <option value="kopi">Kopi Susu Kemasan</option>
-                            <option value="teh">Teh Manis Hangat</option>
+                            @if(isset($beverages) && $beverages->count() > 0)
+                                @foreach($beverages->groupBy(fn($item) => $item->category->name ?? 'Lainnya') as $categoryName => $items)
+                                    <optgroup label="{{ $categoryName }}">
+                                        @foreach($items as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->sugar_per_100ml }}g/100ml)</option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
+                            @else
+                                <option value="1">Teh manis kemasan (9.8g/100ml)</option>
+                                <option value="2">Teh tarik (11.2g/100ml)</option>
+                                <option value="3">Thai tea (13.5g/100ml)</option>
+                                <option value="4">Kopi susu (12.4g/100ml)</option>
+                                <option value="5">Boba (14.2g/100ml)</option>
+                                <option value="6">Minuman soda (10.6g/100ml)</option>
+                            @endif
                         </select>
+
+
                     </div>
 
                     <!-- Volume -->
@@ -268,21 +334,24 @@
     <script>
         function sugarCalculator() {
             return {
-                drink: 'boba',
+                drink: '{{ isset($beverages) && $beverages->first() ? $beverages->first()->id : "1" }}',
                 volume: 250,
                 showResult: false,
                 grams: 0,
                 percentage: 0,
                 calculate() {
-                    const sugarData = {
-                        boba: 12,
-                        soda: 10.6,
-                        kopi: 9,
-                        teh: 8
-                    };
-                    const sugarPer100 = sugarData[this.drink];
-                    this.grams = ((sugarPer100 * this.volume) / 100).toFixed(1);
-                    this.percentage = Math.round((this.grams / 25) * 100);
+                    const sugarData = @json($sugarDataMap ?? []);
+
+                    let rawSugar = sugarData[this.drink] ?? sugarData[String(this.drink)] ?? sugarData[Number(this.drink)];
+                    if (rawSugar === undefined && Object.keys(sugarData).length > 0) {
+                        rawSugar = Object.values(sugarData)[0];
+                    }
+                    const sugarPer100 = parseFloat(rawSugar) || 10.0;
+                    const vol = parseFloat(this.volume) || 250;
+                    const totalGrams = (sugarPer100 * vol) / 100;
+                    this.grams = isNaN(totalGrams) ? '25.0' : totalGrams.toFixed(1);
+                    const perc = Math.round((parseFloat(this.grams) / 25) * 100);
+                    this.percentage = isNaN(perc) ? 100 : perc;
                     this.showResult = true;
                 },
                 reset() {
@@ -291,5 +360,7 @@
             }
         }
     </script>
+
+
 </body>
 </html>

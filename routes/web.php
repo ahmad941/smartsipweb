@@ -18,11 +18,16 @@ use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminTeamController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminExportController;
+use App\Models\Beverage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $beverages = Beverage::with('category')->get();
+    $sugarDataMap = $beverages->pluck('sugar_per_100ml', 'id');
+    return view('welcome', compact('beverages', 'sugarDataMap'));
 });
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/student/setup', [StudentProfileController::class, 'create'])->name('student.profile.setup');
