@@ -8,14 +8,19 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\PasswordlessAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
+    Route::get('siswa/login', [PasswordlessAuthController::class, 'create'])->name('siswa.login');
+    Route::post('siswa/login', [PasswordlessAuthController::class, 'store'])->name('siswa.login.store');
+
+    Route::get('register', [PasswordlessAuthController::class, 'create'])
         ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [PasswordlessAuthController::class, 'store']);
+
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');

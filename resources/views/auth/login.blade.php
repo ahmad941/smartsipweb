@@ -11,8 +11,19 @@
                 S
             </div>
             <h2 class="text-xl font-extrabold text-dark-navy tracking-tight">Selamat Datang Kembali</h2>
-            <p class="text-xs text-muted-gray mt-1 leading-normal">Silakan masuk ke akun SmartSip Anda</p>
+            <p class="text-xs text-muted-gray mt-1 leading-normal">Halaman masuk untuk Guru / Pengelola Admin</p>
         </div>
+
+        <!-- Student Quick Passwordless Notice -->
+        <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl text-center">
+            <p class="text-xs font-semibold text-dark-navy">
+                Siswa SmartSip? 
+                <a href="{{ route('siswa.login') }}" class="font-extrabold text-primary hover:underline ml-1">
+                    Masuk Tanpa Password Disini &rarr;
+                </a>
+            </p>
+        </div>
+
 
         <!-- Email Address -->
         <div>
