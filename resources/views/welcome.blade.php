@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SmartSip - Kendalikan Manismu!</title>
+    <link rel="icon" href="{{ asset('images/smartsip_favicon.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
