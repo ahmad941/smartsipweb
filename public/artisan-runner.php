@@ -19,9 +19,12 @@ echo "<h3>2. Config Cache</h3><pre>";
 echo shell_exec('php artisan config:cache 2>&1') ?: 'config:cache finished.';
 echo "</pre>";
 
-echo "<h3>3. Route Cache</h3><pre>";
+echo "<h3>3. Route Cache & Clear</h3><pre>";
+echo shell_exec('php artisan route:clear 2>&1') ?: 'route:clear finished.';
+echo "\n";
 echo shell_exec('php artisan route:cache 2>&1') ?: 'route:cache finished.';
 echo "</pre>";
+
 
 echo "<h3>4. View Cache</h3><pre>";
 echo shell_exec('php artisan view:cache 2>&1') ?: 'view:cache finished.';
