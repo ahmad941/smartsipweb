@@ -1,7 +1,7 @@
 ================================================================================
            CATATAN PERUBAHAN & PENYEMPURNAAN SISTEM SMARTSIP WEB
-                     TANGGAL: 16 - 17 AGUSTUS 2026
-                      STATUS: READY FOR GO LIVE
+                      TANGGAL: 16 - 17 AGUSTUS 2026
+                       STATUS: READY FOR GO LIVE
 ================================================================================
 
 1. FITUR HALAMAN KUESIONER PUBLIK DEDIKASI (TANPA LOGIN)
@@ -66,8 +66,33 @@
      Gula Harian & Kategori (WHO 2015 & Permenkes No. 30/2013), Skor Pengetahuan
      Gula (Arikunto 2010), TPB (Ajzen 1991), dan System Usability Scale (Brooke 1996).
 
+--------------------------------------------------------------------------------
+
+6. PEMBARUAN ARSITEKTUR, MANAJEMEN SISWA & PENUTUPAN CELAH KEAMANAN (SESI 17 AGUSTUS)
+   - Persiapan Database Production Go-Live:
+     * Pembersihan data dummy Guru & Siswa dari DatabaseSeeder.php sehingga 
+       'php artisan migrate:fresh --seed' murni menghasilkan 1 Super Admin dan Master Data baku.
+     * Penambahan kolom '$table->timestamps()' di migrasi research_teams untuk perbaikan CRUD Tim Peneliti.
+   - Refactoring Arsitektur Master Kelas Mandiri (Standalone Master Table):
+     * Menghapus kolom FK 'school_id' dari tabel school_classes (database/migrations/2026_07_19_131539_create_school_classes_table.php).
+     * Mengubah Master Kelas (KELAS VII, KELAS VIII, KELAS IX, X-IPA 1, dll) menjadi Master Data Global/Mandiri.
+     * Pemisahan Halaman Pengelolaan Admin: /admin/schools (Master Sekolah) dan /admin/classes (Master Kelas).
+     * Penyesuaian DashboardController & StudentController dari pemanggilan relasi lama.
+   - Fitur Halaman Manajemen Data Siswa Responden (Profil & Antropometri):
+     * Pembuatan StudentController.php dan halaman baru /admin/students (resources/views/admin/students/index.blade.php).
+     * Menyediakan kartu statistik responden (Total Siswa, L/P, Rerata IMT) & tabel antropometri lengkap 
+       (TB, BB, IMT, Status Kategori, % Lemak Tubuh, Uang Saku, & Demografi Orang Tua).
+     * Dilengkapi fitur Filter Sekolah/Gender, Search, Modal Edit Antropometri (auto-recalculate IMT), & Hapus.
+     * Menambahkan menu 'Data Siswa (Profil)' pada Sidebar Admin.
+     * Type cast '(float)' pada number_format() untuk kompatibilitas PHP 8.3 strict mode.
+     * Penyesuaian case-sensitivity class name FFQResponse.php untuk kompatibilitas server Linux hosting.
+   - Penutupan Celah Keamanan Autentikasi (Passwordless Auth Role Guard):
+     * Mempasang otorisasi role ketat pada PasswordlessAuthController.php & PublicSurveyController.php.
+     * Memblokir total login tanpa password untuk role 'admin' & 'guru'. Sistem menolak masukan 
+       email Admin/Guru pada form email publik dan mewajibkan masuk via halaman Login Admin resmi dengan password.
+
 ================================================================================
-                            DOKUMEN DICATAT OLEH:
-                      ANTIGRAVITY AI CODING ASSISTANT
-                            TANGGAL: 17 AGUSTUS 2026
+                             DOKUMEN DICATAT OLEH:
+                       ANTIGRAVITY AI CODING ASSISTANT
+                             TANGGAL: 17 AGUSTUS 2026
 ================================================================================
