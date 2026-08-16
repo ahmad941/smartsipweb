@@ -19,6 +19,7 @@ use App\Http\Controllers\AdminTeamController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminExportController;
 use App\Http\Controllers\PublicSurveyController;
+use App\Http\Controllers\StudentController;
 use App\Models\Beverage;
 use Illuminate\Support\Facades\Route;
 
