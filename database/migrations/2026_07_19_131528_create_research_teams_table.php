@@ -19,6 +19,7 @@ return new class extends Migration
         $table->string('photo_url')->nullable();
         $table->text('description')->nullable();
         $table->tinyInteger('sort_order')->default(1);
+        $table->timestamps();
         });
     }
 
