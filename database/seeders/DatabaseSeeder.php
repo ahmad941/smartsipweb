@@ -113,44 +113,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 6. Membuat Akun Guru/UKS (Pemantau)
-        $guruUser = User::firstOrCreate(
-            ['email' => 'guru@smartsip.id'],
-            [
-                'name' => 'Bapak Budi (Guru UKS)',
-                'password' => Hash::make('password123'),
-                'role' => 'guru',
-                'school_id' => $schoolIntervensi->id,
-            ]
-        );
-        if (!$guruUser->school_id) {
-            $guruUser->update(['school_id' => $schoolIntervensi->id]);
-        }
-
-        // 7. Membuat Akun Dummy Siswa (Responden Gen Z)
-        $userStudent = User::firstOrCreate(
-            ['email' => 'siswa@smartsip.id'],
-            [
-                'name' => 'Siswa Responden 01',
-                'password' => Hash::make('password123'),
-                'role' => 'siswa',
-            ]
-        );
-
-        // Mengisi Profil Antropometri Siswa di Tabel Terpisah (Normalisasi 3NF)
-        Student::firstOrCreate(
-            ['user_id' => $userStudent->id],
-            [
-                'school_id' => $schoolIntervensi->id,
-                'class_id' => $classX->id,
-                'nickname' => 'Z-Warrior', // Pseudonimisasi Riset
-                'gender' => 'L',
-                'date_of_birth' => '2009-05-15',
-                'height_cm' => 165.5,
-                'weight_kg' => 55.0,
-                'bmi_score' => 20.1, // Dummy IMT Normal
-            ]
-        );
+        // (Data Guru dan Siswa dummy telah dihilangkan agar database siap untuk Go Live)
 
         // 8. Membuat Soal Kuesioner TPB (Theory of Planned Behavior - Instrumen Dokumen Baku 23 Item)
         $tpbQuestions = [
