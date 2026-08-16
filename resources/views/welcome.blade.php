@@ -131,9 +131,10 @@
                             <span class="text-base">📋</span>
                             <span class="text-[11px] font-extrabold text-emerald-800">Isi Kuesioner Tanpa Login?</span>
                         </div>
-                        <a href="{{ route('public.survey') }}" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] rounded-lg shadow-sm transition-all shrink-0">
+                        <a href="{{ Route::has('public.survey') ? route('public.survey') : url('/kuesioner-siswa') }}" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] rounded-lg shadow-sm transition-all shrink-0">
                             Isi Survei &rarr;
                         </a>
+
                     </div>
 
                     <!-- Footer Link -->
