@@ -29,20 +29,21 @@ class DatabaseSeeder extends Seeder
         ], ['key'], ['value']);
 
         // 2. Membuat Master Data Sekolah & Kelas (Metodologi Riset)
-        $schoolIntervensi = School::firstOrCreate(
+        School::firstOrCreate(
             ['name' => 'SMAN 1 Intervensi'],
             ['group_type' => 'intervensi']
         );
 
-        $schoolKontrol = School::firstOrCreate(
+        School::firstOrCreate(
             ['name' => 'SMAN 2 Kontrol'],
             ['group_type' => 'kontrol']
         );
 
-        $classX = SchoolClass::firstOrCreate([
-            'school_id' => $schoolIntervensi->id,
-            'name' => 'X-IPA 1'
-        ]);
+        // Master Data Kelas Mandiri
+        $masterClasses = ['KELAS VII', 'KELAS VIII', 'KELAS IX', 'X-IPA 1', 'X-IPA 2', 'XI-IPA 1', 'XII-IPA 1'];
+        foreach ($masterClasses as $className) {
+            SchoolClass::firstOrCreate(['name' => $className]);
+        }
 
         // 3. Membuat Master Data Minuman (Sugar Tracker - 20 Item Baku)
         $beverageCategoriesData = [

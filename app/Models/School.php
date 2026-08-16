@@ -6,14 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
 {
-protected $fillable = [
+    protected $fillable = [
         'name', 'group_type'
     ];
-
-    public function schoolClasses()
-    {
-        return $this->hasMany(SchoolClass::class);
-    }
 
     public function students()
     {

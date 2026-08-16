@@ -7,14 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class SchoolClass extends Model
 {
     protected $fillable = [
-        'school_id', 'name'
+        'name'
     ];
-
-    // Relasi Balik ke Master Sekolah
-    public function school()
-    {
-        return $this->belongsTo(School::class);
-    }
 
     // Relasi 1:N ke Siswa (Satu kelas berisi banyak siswa)
     public function students()

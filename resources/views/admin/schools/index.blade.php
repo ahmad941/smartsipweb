@@ -3,7 +3,7 @@
         <div class="flex flex-col">
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">SmartSip &rsaquo; Pengelolaan</span>
             <h2 class="font-extrabold text-xl text-slate-800 leading-tight tracking-tight mt-0.5">
-                Kelola Sekolah & Kelas Mitra
+                Master Sekolah Mitra
             </h2>
         </div>
     </x-slot>
@@ -39,13 +39,14 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
-                <!-- School Cards Grid (Col 8) -->
-                <div class="lg:col-span-8 space-y-6">
-                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <!-- School List Table (Col 8) -->
+                <div class="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
                         <div>
-                            <h3 class="text-base font-extrabold text-slate-800">Sekolah Mitra Terdaftar</h3>
-                            <p class="text-slate-400 text-xs mt-1">Daftar sekolah mitra riset lapangan beserta pembagian kelas belajar.</p>
+                            <h3 class="text-base font-extrabold text-slate-800">Daftar Sekolah Mitra Terdaftar</h3>
+                            <p class="text-slate-400 text-xs mt-1">Daftar sekolah mitra riset lapangan beserta pembagian kelompok riset.</p>
                         </div>
+                        
                         <!-- Search Form -->
                         <form method="GET" action="{{ route('schools.index') }}" class="relative sm:w-64">
                             <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Cari sekolah / kelompok..."
@@ -56,74 +57,57 @@
                         </form>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        @forelse ($schools as $school)
-                            <div class="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between shadow-sm space-y-5">
-                                <div class="space-y-4">
-                                    <div class="flex justify-between items-start gap-2">
-                                        <h4 class="text-sm font-extrabold text-slate-800 leading-snug">{{ $school->name }}</h4>
-                                        <span class="px-2.5 py-1 text-[9px] font-extrabold rounded-full border shrink-0
-                                            {{ $school->group_type === 'intervensi' ? 'bg-purple-50 border-purple-200 text-purple-600' : 'bg-slate-50 border-slate-200 text-slate-500' }}">
-                                            {{ strtoupper($school->group_type) }}
-                                        </span>
-                                    </div>
-                                    
-                                    <!-- Classes List -->
-                                    <div class="space-y-2.5">
-                                        <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Daftar Kelas</span>
-                                        <div class="flex flex-wrap gap-2">
-                                            @forelse ($school->schoolClasses as $class)
-                                                <div class="inline-flex items-center gap-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-full pl-3 pr-1.5 py-1 text-2xs font-bold border border-slate-200 transition-colors">
-                                                    <span>{{ $class->name }}</span>
-                                                    <form action="{{ route('schools.classes.destroy', $class->id) }}" method="POST" onsubmit="return confirm('Hapus kelas {{ $class->name }}?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="w-4 h-4 rounded-full bg-white hover:bg-rose-500 hover:text-white flex items-center justify-center text-slate-400 border border-slate-200 hover:border-rose-500 transition-all font-bold">
-                                                            &times;
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @empty
-                                                <span class="text-xs text-slate-400 font-bold italic">Belum ada kelas belajar.</span>
-                                            @endforelse
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Class Inline Creator & Action Controls -->
-                                <div class="pt-4 border-t border-slate-100 space-y-4">
-                                    <!-- Inline Add Class Form -->
-                                    <form action="{{ route('schools.classes.store', $school->id) }}" method="POST" class="flex gap-2">
-                                        @csrf
-                                        <input type="text" name="name" required placeholder="Cth: X-IPA 2"
-                                            class="flex-1 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-450 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white h-9 px-3 focus:outline-none transition-all text-2xs" />
-                                        <button type="submit" class="h-9 px-3 bg-slate-50 hover:bg-purple-600 border border-slate-200 hover:border-purple-600 text-slate-600 hover:text-white text-2xs font-extrabold rounded-xl transition-all flex items-center gap-1">
-                                            <span>+ Kelas</span>
-                                        </button>
-                                    </form>
-
-                                     <!-- School Controls -->
-                                     <div class="flex justify-between items-center pt-2 border-t border-slate-100">
-                                         <button @click="openEdit({{ json_encode($school) }})" class="px-3 py-1.5 bg-purple-50 hover:bg-purple-600 text-purple-600 hover:text-white border border-purple-100 hover:border-purple-600 rounded-lg text-[10px] font-bold transition-all">
-                                             Edit Sekolah
-                                         </button>
-                                         
-                                         <form action="{{ route('schools.destroy', $school->id) }}" method="POST" onsubmit="return confirm('Hapus sekolah {{ $school->name }} beserta seluruh kelas di dalamnya?')">
-                                             @csrf
-                                             @method('DELETE')
-                                             <button type="submit" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-100 hover:border-rose-600 rounded-lg text-[10px] font-bold transition-all">
-                                                 Hapus Sekolah
-                                             </button>
-                                         </form>
-                                     </div>
-                                </div>
-
-                            </div>
-                        @empty
-                            <div class="col-span-full bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400 font-bold italic shadow-sm">
-                                Belum ada data sekolah terdaftar.
-                            </div>
-                        @endforelse
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-slate-100 text-slate-400 uppercase tracking-wider font-extrabold text-[10px]">
+                                    <th class="pb-3 w-12 text-center">No</th>
+                                    <th class="pb-3">Nama Sekolah Mitra</th>
+                                    <th class="pb-3 text-center">Kelompok Riset</th>
+                                    <th class="pb-3 text-center">Jumlah Siswa</th>
+                                    <th class="pb-3 w-28 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @forelse ($schools as $index => $school)
+                                    <tr class="hover:bg-slate-50/60 transition-colors">
+                                        <td class="py-4 text-center text-slate-400 font-bold">
+                                            {{ $schools->firstItem() + $index }}
+                                        </td>
+                                        <td class="py-4 font-extrabold text-slate-800">
+                                            {{ $school->name }}
+                                        </td>
+                                        <td class="py-4 text-center">
+                                            <span class="px-2.5 py-1 text-[9px] font-extrabold rounded-full border uppercase
+                                                {{ $school->group_type === 'intervensi' ? 'bg-purple-50 border-purple-200 text-purple-600' : 'bg-slate-50 border-slate-200 text-slate-500' }}">
+                                                {{ strtoupper($school->group_type) }}
+                                            </span>
+                                        </td>
+                                        <td class="py-4 text-center font-bold text-slate-700">
+                                            {{ $school->students_count }} Siswa
+                                        </td>
+                                        <td class="py-4 text-center">
+                                            <div class="flex items-center justify-center gap-1.5">
+                                                <button @click="openEdit({{ json_encode($school) }})" class="px-2.5 py-1.5 bg-purple-50 hover:bg-purple-600 text-purple-600 hover:text-white border border-purple-100 hover:border-purple-600 rounded-lg text-[10px] font-bold transition-all">
+                                                    Edit
+                                                </button>
+                                                <form action="{{ route('schools.destroy', $school->id) }}" method="POST" onsubmit="return confirm('Hapus sekolah {{ $school->name }}?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-100 hover:border-rose-600 rounded-lg text-[10px] font-bold transition-all">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="py-12 text-center text-slate-400 font-bold italic">Belum ada data sekolah terdaftar.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- Pagination Links -->

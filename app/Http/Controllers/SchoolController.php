@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
-use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -15,7 +14,7 @@ class SchoolController extends Controller
     {
         $search = $request->get('search');
 
-        $schools = School::with('schoolClasses')
+        $schools = School::withCount('students')
             ->when($search, function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('group_type', 'like', "%{$search}%");
@@ -38,7 +37,7 @@ class SchoolController extends Controller
 
         School::create($validated);
 
-        return redirect()->route('schools.index')->with('success', 'Sekolah baru berhasil ditambahkan!');
+        return redirect()->route('schools.index')->with('success', 'Sekolah Mitra baru berhasil ditambahkan!');
     }
 
     /**
@@ -65,54 +64,8 @@ class SchoolController extends Controller
             return redirect()->route('schools.index')->with('error', 'Sekolah ini tidak dapat dihapus karena sudah memiliki siswa terdaftar.');
         }
 
-        if ($school->schoolClasses()->exists()) {
-            return redirect()->route('schools.index')->with('error', 'Sekolah ini memiliki kelas belajar. Silakan hapus kelas-kelas di dalamnya terlebih dahulu.');
-        }
-
         $school->delete();
 
         return redirect()->route('schools.index')->with('success', 'Sekolah berhasil dihapus!');
-    }
-
-    /**
-     * Add a class to a school.
-     */
-    public function storeClass(Request $request, School $school)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:50',
-        ]);
-
-        // Pastikan nama kelas unik di sekolah yang sama
-        $exists = SchoolClass::where('school_id', $school->id)
-            ->where('name', $validated['name'])
-            ->exists();
-
-        if ($exists) {
-            return redirect()->route('schools.index')->with('error', 'Kelas dengan nama tersebut sudah ada di sekolah ini.');
-        }
-
-        SchoolClass::create([
-            'school_id' => $school->id,
-            'name' => $validated['name'],
-        ]);
-
-        return redirect()->route('schools.index')->with('success', 'Kelas baru berhasil ditambahkan ke ' . $school->name . '!');
-    }
-
-    /**
-     * Remove a class.
-     */
-    public function destroyClass($id)
-    {
-        $class = SchoolClass::findOrFail($id);
-
-        if ($class->students()->exists()) {
-            return redirect()->route('schools.index')->with('error', 'Kelas ini tidak dapat dihapus karena masih berisi siswa.');
-        }
-
-        $class->delete();
-
-        return redirect()->route('schools.index')->with('success', 'Kelas berhasil dihapus!');
     }
 }

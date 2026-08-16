@@ -20,6 +20,7 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminExportController;
 use App\Http\Controllers\PublicSurveyController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SchoolClassController;
 use App\Models\Beverage;
 use Illuminate\Support\Facades\Route;
 
@@ -91,13 +92,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/beverages/{beverage}', [BeverageController::class, 'update'])->name('beverages.update');
     Route::delete('/beverages/{beverage}', [BeverageController::class, 'destroy'])->name('beverages.destroy');
 
-    // Schools & Classes CRUD
+    // Schools CRUD
     Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');
     Route::post('/schools', [SchoolController::class, 'store'])->name('schools.store');
     Route::put('/schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
     Route::delete('/schools/{school}', [SchoolController::class, 'destroy'])->name('schools.destroy');
-    Route::post('/schools/{school}/classes', [SchoolController::class, 'storeClass'])->name('schools.classes.store');
-    Route::delete('/classes/{class}', [SchoolController::class, 'destroyClass'])->name('schools.classes.destroy');
+
+    // Standalone Master Classes CRUD
+    Route::get('/classes', [SchoolClassController::class, 'index'])->name('admin.classes.index');
+    Route::post('/classes', [SchoolClassController::class, 'store'])->name('admin.classes.store');
+    Route::put('/classes/{class}', [SchoolClassController::class, 'update'])->name('admin.classes.update');
+    Route::delete('/classes/{class}', [SchoolClassController::class, 'destroy'])->name('admin.classes.destroy');
 
     // TPB Instruments CRUD
     Route::get('/instruments', [TpbQuestionController::class, 'instrumentsIndex'])->name('admin.instruments.index');
