@@ -143,7 +143,7 @@
             </a>
 
             <!-- 10. Data Siswa Responden -->
-            <a href="{{ route('admin.students.index') }}" 
+            <a href="{{ Route::has('admin.students.index') ? route('admin.students.index') : '#' }}" 
                 x-show="!sidebarSearch || 'data siswa responden antropometri imt'.includes(sidebarSearch.toLowerCase())"
                 class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all group
                     {{ request()->routeIs('admin.students.*') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/25' : 'text-slate-600 hover:bg-slate-100/70 hover:text-slate-900' }}">
