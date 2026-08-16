@@ -22,7 +22,7 @@ class PasswordlessAuthController extends Controller
     }
 
     /**
-     * Proses autentikasi email tanpa password.
+     * Proses autentikasi email tanpa password (KHUSUS SISWA).
      */
     public function store(Request $request): RedirectResponse
     {
@@ -33,25 +33,34 @@ class PasswordlessAuthController extends Controller
             'email.email' => 'Format alamat email tidak valid.',
         ]);
 
-        $email = $request->input('email');
+        $email = strtolower(trim($request->input('email')));
 
-        // Cari atau buat User siswa baru secara otomatis
+        // Cari User berdasarkan email
         $user = User::where('email', $email)->first();
 
+        // 🛡️ KEAMANAN TINGKAT TINGGI:
+        // Jika email terdaftar sebagai Admin atau Guru, BLOKIR LOGIN TANPA PASSWORD!
+        if ($user && $user->role !== 'siswa') {
+            return back()->withErrors([
+                'email' => 'Email ini terdaftar sebagai akun ' . ucfirst($user->role) . '. Silakan login melalui tombol "Login Guru/Admin" menggunakan password.',
+            ])->onlyInput('email');
+        }
+
+        // Jika user belum ada, buat akun baru sebagai Siswa
         if (!$user) {
             $user = User::create([
                 'name' => explode('@', $email)[0],
                 'email' => $email,
                 'role' => 'siswa',
-                'password' => Hash::make(Str::random(32)), // Random hash password untuk keamanan DB
+                'password' => Hash::make(Str::random(32)),
             ]);
         }
 
-        // Login dengan remember = true (menyimpan token di Cookie browser secara permanen)
+        // Login hanya untuk akun siswa
         Auth::login($user, true);
 
         // Jika profil siswa belum diisi, arahkan ke setup profil riset
-        if ($user->role === 'siswa' && !$user->student) {
+        if (!$user->student) {
             return redirect()->route('student.profile.setup');
         }
 

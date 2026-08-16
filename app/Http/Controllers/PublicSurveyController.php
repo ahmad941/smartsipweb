@@ -82,8 +82,15 @@ class PublicSurveyController extends Controller
 
         $email = strtolower(trim($validated['email']));
 
-        // 3. Pengecekan Duplikasi: Apakah email ini sudah pernah membuat student & mengisi kuesioner T0?
+        // 3. Pengecekan Duplikasi & Keamanan Role
         $user = User::where('email', $email)->first();
+
+        // 🛡️ KEAMANAN: Blokir email Admin & Guru dari pengisian survei publik siswa
+        if ($user && $user->role !== 'siswa') {
+            return back()->withErrors([
+                'email' => 'Email ini terdaftar sebagai akun ' . ucfirst($user->role) . ' dan tidak dapat digunakan untuk mengisi survei siswa.',
+            ])->withInput();
+        }
 
         if ($user && $user->student) {
             $existingStudent = $user->student;
