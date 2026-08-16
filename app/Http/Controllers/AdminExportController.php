@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\SugarConsumption;
 use App\Models\TpbResponse;
-use App\Models\FfqResponse;
+use App\Models\FFQResponse;
 use App\Models\KnowledgeResponse;
 use App\Models\UsabilityResponse;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class AdminExportController extends Controller
     {
         $stats = [
             'students' => Student::count(),
-            'ffq_count' => FfqResponse::count(),
+            'ffq_count' => FFQResponse::count(),
             'tpb_count' => TpbResponse::count(),
             'knowledge_count' => KnowledgeResponse::count(),
             'usability_count' => UsabilityResponse::count(),
@@ -78,7 +78,7 @@ class AdminExportController extends Controller
     // 2. Ekspor Bagian B (FFQ 7 Hari)
     public function exportFfq()
     {
-        $responses = FfqResponse::with(['student.user', 'student.school'])->get();
+        $responses = FFQResponse::with(['student.user', 'student.school'])->get();
 
         $csvHeader = [
             'Response_ID', 'Student_ID', 'Nama_Lengkap', 'Sekolah', 'Fase',

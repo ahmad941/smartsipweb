@@ -1,6 +1,6 @@
 <?php
 /**
- * SmartSip Hosting Helper - Specific Deployment Runner for Standalone Master Classes & Admin UI Update
+ * SmartSip Hosting Helper - Specific Deployment Runner
  * ⚠️ Hapus file ini setelah selesai menggunakannya demi keamanan!
  */
 
@@ -16,32 +16,22 @@ echo "<style>
     .success-banner { background: #064e3b; color: #6ee7b7; padding: 15px; border-radius: 10px; margin-top: 25px; border: 1px solid #047857; font-weight: bold; }
 </style></head><body>";
 
-echo "<h2>🚀 SmartSip Deployment Runner (Master Kelas & Admin UI Update)</h2>";
-echo "<div class='alert'>⚠️ <strong>PENTING:</strong> Segera hapus file ini (<code>artisan-runner.php</code>) dari hosting setelah proses selesai!</div>";
+echo "<h2>🚀 SmartSip Deployment & Cache Runner</h2>";
+echo "<div class='alert'>⚠️ <strong>PENTING:</strong> Hapus file ini (<code>artisan-runner.php</code>) setelah selesai menggunakannya demi keamanan server!</div>";
 
-// Step 1: Migrate Fresh & Seed (Standardize Database Schema without school_id)
-echo "<h3>1. Reset & Seed Database (migrate:fresh --seed)</h3><pre>";
-echo shell_exec('php artisan migrate:fresh --seed --force 2>&1') ?: 'Migrate fresh finished.';
-echo "</pre>";
-
-// Step 2: Storage Link
-echo "<h3>2. Create Storage Link</h3><pre>";
-echo shell_exec('php artisan storage:link 2>&1') ?: 'Storage link finished.';
-echo "</pre>";
-
-// Step 3: Optimize & Clear Cache
-echo "<h3>3. Clear Cache (optimize:clear)</h3><pre>";
+// Step 1: Clear All Cache
+echo "<h3>1. Clear All Cache (optimize:clear)</h3><pre>";
 echo shell_exec('php artisan optimize:clear 2>&1') ?: 'Optimize clear finished.';
 echo "</pre>";
 
-// Step 4: Re-cache Routes & Views
-echo "<h3>4. Cache Routes & Views</h3><pre>";
+// Step 2: Re-cache Routes & Views
+echo "<h3>2. Cache Routes & Views</h3><pre>";
 echo "--- Route Cache ---\n";
 echo shell_exec('php artisan route:cache 2>&1') ?: 'Route cache finished.';
 echo "\n--- View Cache ---\n";
 echo shell_exec('php artisan view:cache 2>&1') ?: 'View cache finished.';
 echo "</pre>";
 
-echo "<div class='success-banner'>✅ SELESAI! Struktur Master Kelas Mandiri, Data Siswa UI, dan Cache Server telah berhasil diperbarui. Silakan login ke Dashboard Admin.</div>";
+echo "<div class='success-banner'>✅ SELESAI! Perbaikan class casing FFQResponse dan Cache Server telah berhasil diperbarui.</div>";
 
 echo "</body></html>";
