@@ -65,7 +65,7 @@
                 <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm">
                     <span class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-wider block">Rata-Rata IMT</span>
                     <span class="text-2xl font-black text-emerald-600 mt-1 block">
-                        {{ number_format($students->avg('bmi_score') ?? 0, 1) }}
+                        {{ number_format((float)($students->avg('bmi_score') ?? 0), 1) }}
                     </span>
                 </div>
             </div>
@@ -196,7 +196,7 @@
 
                                     <!-- Uang Saku -->
                                     <td class="py-4 text-center font-bold text-slate-700">
-                                        {{ $s->pocket_money ? 'Rp ' . number_format($s->pocket_money, 0, ',', '.') : '-' }}
+                                        {{ $s->pocket_money && is_numeric($s->pocket_money) ? 'Rp ' . number_format((float)$s->pocket_money, 0, ',', '.') : ($s->pocket_money ?: '-') }}
                                     </td>
 
                                     <!-- Aksi -->
