@@ -102,7 +102,7 @@
                     @endif
 
                     <!-- Form -->
-                    <form method="POST" action="{{ route('siswa.login.store') }}" class="space-y-3">
+                    <form method="POST" action="{{ route('siswa.login.store') }}" class="space-y-3" onsubmit="if(document.getElementById('email')?.value) localStorage.setItem('smartsip_student_email', document.getElementById('email').value.trim())">
                         @csrf
                         
                         <!-- Flex Input Wrapper -->
@@ -124,6 +124,17 @@
                             </svg>
                         </button>
                     </form>
+
+                    <!-- Public Survey Direct Link Banner -->
+                    <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">📋</span>
+                            <span class="text-[11px] font-extrabold text-emerald-800">Isi Kuesioner Tanpa Login?</span>
+                        </div>
+                        <a href="{{ route('public.survey') }}" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] rounded-lg shadow-sm transition-all shrink-0">
+                            Isi Survei &rarr;
+                        </a>
+                    </div>
 
                     <!-- Footer Link -->
                     <div class="pt-2 border-t border-slate-100 flex items-center justify-end text-[11px] font-bold">

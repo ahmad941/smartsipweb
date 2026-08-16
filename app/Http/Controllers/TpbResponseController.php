@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FFQResponse;
+use App\Models\KnowledgeResponse;
 use App\Models\TpbQuestion;
 use App\Models\TpbResponse;
 use App\Models\PointHistory;
@@ -26,6 +28,10 @@ class TpbResponseController extends Controller
             return view('questionnaire.completed');
         }
 
+        if (TpbResponse::where('student_id', $student->id)->where('phase', $phase)->exists()) {
+            return redirect()->route('survey.index')->with('info', 'Anda sudah mengisi Kuesioner TPB untuk fase ' . $phase . '. Terima kasih!');
+        }
+
         $questions = TpbQuestion::where('is_active', true)->get();
 
         return view('questionnaire.index', compact('questions', 'phase'));
@@ -43,6 +49,10 @@ class TpbResponseController extends Controller
         $phase = $this->determineCurrentPhase($student->id);
         if ($phase === 'completed') {
             return redirect()->route('dashboard')->with('error', 'Kuesioner Anda untuk semua fase sudah diisi!');
+        }
+
+        if (TpbResponse::where('student_id', $student->id)->where('phase', $phase)->exists()) {
+            return redirect()->route('survey.index')->with('info', 'Anda sudah mengisi Kuesioner TPB untuk fase ' . $phase . '.');
         }
 
         $questions = TpbQuestion::where('is_active', true)->get();
@@ -74,26 +84,36 @@ class TpbResponseController extends Controller
             'description' => 'Mengisi Kuesioner TPB Fase ' . $phase,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Kuesioner TPB Fase ' . $phase . ' berhasil dikirim! Anda mendapatkan +20 poin gamifikasi.');
+        return redirect()->route('survey.index')->with('success', 'Kuesioner TPB Fase ' . $phase . ' berhasil dikirim! Anda mendapatkan +20 poin gamifikasi.');
     }
 
     private function determineCurrentPhase($studentId)
     {
-        $hasT0 = TpbResponse::where('student_id', $studentId)->where('phase', 'T0')->exists();
-        if (!$hasT0) {
+        $t0Complete = FFQResponse::where('student_id', $studentId)->where('phase', 'T0')->exists()
+            && TpbResponse::where('student_id', $studentId)->where('phase', 'T0')->exists()
+            && KnowledgeResponse::where('student_id', $studentId)->where('phase', 'T0')->exists();
+
+        if (!$t0Complete) {
             return 'T0';
         }
 
-        $hasT1 = TpbResponse::where('student_id', $studentId)->where('phase', 'T1')->exists();
-        if (!$hasT1) {
+        $t1Complete = FFQResponse::where('student_id', $studentId)->where('phase', 'T1')->exists()
+            && TpbResponse::where('student_id', $studentId)->where('phase', 'T1')->exists()
+            && KnowledgeResponse::where('student_id', $studentId)->where('phase', 'T1')->exists();
+
+        if (!$t1Complete) {
             return 'T1';
         }
 
-        $hasT2 = TpbResponse::where('student_id', $studentId)->where('phase', 'T2')->exists();
-        if (!$hasT2) {
+        $t2Complete = FFQResponse::where('student_id', $studentId)->where('phase', 'T2')->exists()
+            && TpbResponse::where('student_id', $studentId)->where('phase', 'T2')->exists()
+            && KnowledgeResponse::where('student_id', $studentId)->where('phase', 'T2')->exists();
+
+        if (!$t2Complete) {
             return 'T2';
         }
 
         return 'completed';
     }
 }
+

@@ -23,6 +23,40 @@
             </div>
         </div>
 
+        <!-- Phase Selection Navigation Tabs -->
+        <div class="flex items-center justify-center gap-2 bg-slate-100/80 p-1.5 rounded-2xl max-w-xl mx-auto overflow-x-auto">
+            @foreach(['T0' => 'Fase T0 (Awal)', 'T1' => 'Fase T1 (Post-Test)', 'T2' => 'Fase T2 (Follow-Up)'] as $pKey => $pLabel)
+                <a href="{{ route('survey.index', ['phase' => $pKey]) }}" 
+                   class="flex-1 text-center py-2.5 px-3.5 rounded-xl text-xs font-black whitespace-nowrap transition-all {{ $phase === $pKey ? 'bg-white text-primary shadow-sm border border-slate-200' : 'text-slate-500 hover:text-dark-navy' }}">
+                    {{ $pLabel }}
+                </a>
+            @endforeach
+        </div>
+
+
+        @if(isset($allPhaseDone) && $allPhaseDone)
+            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl text-xs font-bold text-center space-y-1">
+                <span class="text-base">🎉</span>
+                <p>Seluruh kuesioner pada <strong class="text-emerald-900 font-extrabold">Fase {{ $phase }}</strong> telah selesai Anda isi!</p>
+                <p class="text-[11px] font-semibold text-emerald-700">Terima kasih atas partisipasi Anda dalam riset konsumsi gula SmartSip.</p>
+            </div>
+        @elseif($phase !== 'T0')
+            <div class="p-4 bg-sky-50 border border-sky-200 text-sky-800 rounded-2xl text-xs font-medium leading-relaxed shadow-sm">
+                <div class="flex items-center gap-2 font-black text-sky-900 mb-1 text-sm">
+                    <span>ℹ️</span> Catatan Evaluasi Lanjutan (Fase {{ $phase }})
+                </div>
+                <p>
+                    Fase {{ $phase }} merupakan evaluasi lanjutan setelah periode edukasi berjalan. Kuesioner awal yang Anda isi via tautan publik sudah <strong>100% tersimpan secara aman pada Fase T0 (Awal)</strong>.
+                </p>
+                <div class="mt-2">
+                    <a href="{{ route('survey.index', ['phase' => 'T0']) }}" class="inline-flex items-center gap-1 font-bold text-primary hover:underline text-xs">
+                        <span>&rarr; Klik di sini untuk melihat status Kuesioner Awal (Fase T0) Anda</span>
+                    </a>
+                </div>
+            </div>
+        @endif
+
+
         @if(session('success'))
             <div class="p-4 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl text-xs font-bold shadow-sm">
                 {{ session('success') }}
@@ -37,6 +71,7 @@
 
         <!-- Survey Cards Grid -->
         <div class="space-y-4">
+
             
             <!-- 0. BAGIAN A. IDENTITAS RESPONDEN -->
             <div class="bg-white border border-slate-100 rounded-[24px] p-5 shadow-premium flex items-center justify-between gap-4">

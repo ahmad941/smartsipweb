@@ -18,6 +18,7 @@ use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminTeamController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AdminExportController;
+use App\Http\Controllers\PublicSurveyController;
 use App\Models\Beverage;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,11 @@ Route::get('/', function () {
     $sugarDataMap = $beverages->pluck('sugar_per_100ml', 'id');
     return view('welcome', compact('beverages', 'sugarDataMap'));
 });
+
+// Standalone Public Survey Route for School Students (Without Login)
+Route::get('/kuesioner-siswa', [PublicSurveyController::class, 'index'])->name('public.survey');
+Route::post('/kuesioner-siswa', [PublicSurveyController::class, 'store'])->name('public.survey.store');
+Route::get('/kuesioner-siswa/sukses/{student}', [PublicSurveyController::class, 'success'])->name('public.survey.success');
 
 
 

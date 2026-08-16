@@ -1,0 +1,73 @@
+================================================================================
+           CATATAN PERUBAHAN & PENYEMPURNAAN SISTEM SMARTSIP WEB
+                     TANGGAL: 16 - 17 AGUSTUS 2026
+                      STATUS: READY FOR GO LIVE
+================================================================================
+
+1. FITUR HALAMAN KUESIONER PUBLIK DEDIKASI (TANPA LOGIN)
+   - Menambahkan rute publik khusus/dedicated link:
+     * GET  /kuesioner-siswa (Halaman formulir kuesioner publik)
+     * POST /kuesioner-siswa (Proses simpan & otomatisasi akun)
+     * GET  /kuesioner-siswa/sukses/{student} (Halaman ringkasan hasil)
+   - Membuat PublicSurveyController.php untuk menangani pengisian terintegrasi
+     Multi-step Wizard 4 Langkah:
+     * Step 1: Email (Auto-fill), Biodata, dan Antropometri (1 Siswa = 1 Sekolah)
+     * Step 2: Kuesioner Pengetahuan Gula (10 Soal Pilihan Ganda)
+     * Step 3: Kuesioner TPB (23 Item Skala Likert 1-5)
+     * Step 4: Survei FFQ Minuman Manis (20 Minuman Baku 7 Hari)
+   - Otomatisasi Akun (Auto-Account):
+     Sistem secara otomatis membuatkan akun User (role 'siswa') & profil Student,
+     menyimpan data respon fase T0, memberikan +60 Poin Gamifikasi, dan
+     melakukan autentikasi otomatis di browser.
+   - Auto-Fill Email Browser:
+     Memuat email dari session, localStorage, cookie browser, dan HTML5
+     autocomplete dari aktivitas sebelumnya.
+   - Proteksi Pengisian Berulang (Anti-Duplicate Submission Guard):
+     Mengecek apakah Email sudah pernah mengisi kuesioner T0. Jika sudah, 
+     isian ke-2 ditolak dan tidak disimpan ke DB, lalu diarahkan ke ringkasan 
+     hasil asli yang pertama.
+
+--------------------------------------------------------------------------------
+
+2. PERBAIKAN BUG OPSI PENGETAHUAN GULA (KNOWLEDGE QUESTION FIX)
+   - Memperbaiki pengulangan opsi pilihan ganda di public-survey/index.blade.php
+     agar membaca properti array Eloquent '$q->options' dari DB.
+   - Pilihan jawaban A, B, C, D beserta teks opsi kini dapat tampil dengan 
+     rapi dan dipilih secara sempurna.
+
+--------------------------------------------------------------------------------
+
+3. PENYEMPURNAAN PENENTUAN FASE & PUSAT KUESIONER (/survey)
+   - Memperbarui fungsi 'determineCurrentPhase' di SurveyController.php dan
+     TpbResponseController.php agar mensyaratkan KETIGA instrumen (FFQ, TPB,
+     dan Pengetahuan Gula) lengkap terisi sebelum berpindah fase.
+   - Menambahkan Tab Navigasi Fase [Fase T0 (Awal)], [Fase T1], [Fase T2].
+   - Menjadikan [Fase T0 (Awal)] sebagai tampilan DEFAULT saat siswa membuka 
+     menu Kuesioner, sehingga siswa langsung melihat status kuesioner awal yang 
+     sudah 100% '✓ Selesai' / '✓ Terisi' tanpa tombol pengisian ulang.
+   - Menambahkan pesan penjelasan resmi pada tab Fase T1 & T2 bahwa fase 
+     tersebut adalah evaluasi lanjutan pasca-intervensi edukasi.
+
+--------------------------------------------------------------------------------
+
+4. AUDIT KEAMANAN & PRA-GO LIVE HARDENING
+   - Menambahkan proteksi otorisasi (IDOR Guard) di PublicSurveyController@success
+     agar siswa login hanya bisa melihat halaman ringkasan miliknya sendiri.
+   - Mengaplikasikan strtolower(trim($email)) untuk normalisasi format email.
+   - Menjalankan kompilasi template Blade (php artisan view:cache):
+     0 Syntax Error pada 92 rute aktif aplikasi.
+
+--------------------------------------------------------------------------------
+
+5. DOKUMENTASI METODOLOGI & RUMUS PERHITUNGAN (PDF)
+   - Membuat file dokumen PDF resmi metodologi & rumus perhitungan di folder document:
+     * Document/Dokumentasi_Perhitungan_Rumus_SmartSip_Fix.pdf
+   - Memuat penjelasan rumus lengkap: IMT (Permenkes No. 2/2020 & WHO), SQ-FFQ
+     Gula Harian & Kategori (WHO 2015 & Permenkes No. 30/2013), Skor Pengetahuan
+     Gula (Arikunto 2010), TPB (Ajzen 1991), dan System Usability Scale (Brooke 1996).
+
+================================================================================
+                            DOKUMEN DICATAT OLEH:
+                      ANTIGRAVITY AI CODING ASSISTANT
+                            TANGGAL: 17 AGUSTUS 2026
+================================================================================

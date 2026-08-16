@@ -41,7 +41,7 @@ class SurveyController extends Controller
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $student = $user->student;
@@ -50,15 +50,32 @@ class SurveyController extends Controller
             return redirect()->route('student.profile.setup');
         }
 
-        $phase = $this->determineCurrentPhase($student->id);
+        $activePhase = $this->determineCurrentPhase($student->id);
+        
+        // Default ke T0 saat membuka menu Kuesioner agar siswa melihat status kuesioner awal yang sudah 100% Selesai
+        if ($request->has('phase')) {
+            $selectedPhase = $request->query('phase');
+        } else {
+            $selectedPhase = 'T0';
+        }
+
+        if (!in_array($selectedPhase, ['T0', 'T1', 'T2', 'completed'])) {
+            $selectedPhase = 'T0';
+        }
+
+        $phase = $selectedPhase;
 
         $ffqDone = FFQResponse::where('student_id', $student->id)->where('phase', $phase)->exists();
         $tpbDone = TpbResponse::where('student_id', $student->id)->where('phase', $phase)->exists();
         $knowledgeDone = KnowledgeResponse::where('student_id', $student->id)->where('phase', $phase)->exists();
         $usabilityDone = UsabilityResponse::where('student_id', $student->id)->exists();
 
-        return view('survey.index', compact('student', 'phase', 'ffqDone', 'tpbDone', 'knowledgeDone', 'usabilityDone'));
+        $allPhaseDone = $ffqDone && $tpbDone && $knowledgeDone;
+
+        return view('survey.index', compact('student', 'phase', 'activePhase', 'ffqDone', 'tpbDone', 'knowledgeDone', 'usabilityDone', 'allPhaseDone'));
     }
+
+
 
     // --- 1. FFQ SURVEI (7 HARI) ---
     public function ffqForm()
@@ -280,23 +297,33 @@ class SurveyController extends Controller
         return redirect()->route('survey.index')->with('success', "Terima kasih! Evaluasi Usability berhasil dikirim. Skor Usability: {$totalScore}/50 ({$category}). +30 Poin!");
     }
 
-    private function determineCurrentPhase($studentId)
+    public static function determineCurrentPhase($studentId)
     {
-        $hasT0 = TpbResponse::where('student_id', $studentId)->where('phase', 'T0')->exists();
-        if (!$hasT0) {
+        $t0Complete = FFQResponse::where('student_id', $studentId)->where('phase', 'T0')->exists()
+            && TpbResponse::where('student_id', $studentId)->where('phase', 'T0')->exists()
+            && KnowledgeResponse::where('student_id', $studentId)->where('phase', 'T0')->exists();
+
+        if (!$t0Complete) {
             return 'T0';
         }
 
-        $hasT1 = TpbResponse::where('student_id', $studentId)->where('phase', 'T1')->exists();
-        if (!$hasT1) {
+        $t1Complete = FFQResponse::where('student_id', $studentId)->where('phase', 'T1')->exists()
+            && TpbResponse::where('student_id', $studentId)->where('phase', 'T1')->exists()
+            && KnowledgeResponse::where('student_id', $studentId)->where('phase', 'T1')->exists();
+
+        if (!$t1Complete) {
             return 'T1';
         }
 
-        $hasT2 = TpbResponse::where('student_id', $studentId)->where('phase', 'T2')->exists();
-        if (!$hasT2) {
+        $t2Complete = FFQResponse::where('student_id', $studentId)->where('phase', 'T2')->exists()
+            && TpbResponse::where('student_id', $studentId)->where('phase', 'T2')->exists()
+            && KnowledgeResponse::where('student_id', $studentId)->where('phase', 'T2')->exists();
+
+        if (!$t2Complete) {
             return 'T2';
         }
 
         return 'completed';
     }
+
 }
