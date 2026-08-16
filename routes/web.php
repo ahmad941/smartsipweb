@@ -137,6 +137,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 
+    // Data Profil & Antropometri Siswa Management
+    Route::get('/students', [StudentController::class, 'index'])->name('admin.students.index');
+    Route::put('/students/{student}', [StudentController::class, 'update'])->name('admin.students.update');
+    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('admin.students.destroy');
+
     // Research Raw Data Exports
     Route::get('/exports', [AdminExportController::class, 'index'])->name('admin.exports.index');
     Route::get('/exports/demographics', [AdminExportController::class, 'exportDemographics'])->name('admin.exports.demographics');

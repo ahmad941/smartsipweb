@@ -139,7 +139,18 @@
                 <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
-                <span x-show="!sidebarCollapsed" class="truncate">User & Responden</span>
+                <span x-show="!sidebarCollapsed" class="truncate">User & Akun</span>
+            </a>
+
+            <!-- 10. Data Siswa Responden -->
+            <a href="{{ route('admin.students.index') }}" 
+                x-show="!sidebarSearch || 'data siswa responden antropometri imt'.includes(sidebarSearch.toLowerCase())"
+                class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all group
+                    {{ request()->routeIs('admin.students.*') ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/25' : 'text-slate-600 hover:bg-slate-100/70 hover:text-slate-900' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                <span x-show="!sidebarCollapsed" class="truncate">Data Siswa (Profil)</span>
             </a>
 
             <!-- 10. Ekspor Data Riset -->
