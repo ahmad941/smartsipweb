@@ -15,8 +15,8 @@ echo "<h3>1. Storage Link</h3><pre>";
 echo shell_exec('php artisan storage:link 2>&1') ?: 'storage:link finished.';
 echo "</pre>";
 
-echo "<h3>2. Config Cache</h3><pre>";
-echo shell_exec('php artisan config:cache 2>&1') ?: 'config:cache finished.';
+echo "<h3>2. Optimize & Clear All Cache</h3><pre>";
+echo shell_exec('php artisan optimize:clear 2>&1') ?: 'optimize:clear finished.';
 echo "</pre>";
 
 echo "<h3>3. Route Cache & Clear</h3><pre>";
@@ -24,6 +24,7 @@ echo shell_exec('php artisan route:clear 2>&1') ?: 'route:clear finished.';
 echo "\n";
 echo shell_exec('php artisan route:cache 2>&1') ?: 'route:cache finished.';
 echo "</pre>";
+
 
 
 echo "<h3>4. View Cache</h3><pre>";
