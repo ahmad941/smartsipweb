@@ -264,7 +264,7 @@ class DashboardController extends Controller
         }
 
         // 3. Rincian Kelas
-        $classes = SchoolClass::with('school')->get()->map(function($class) {
+        $classes = SchoolClass::get()->map(function($class) {
             $studentIds = Student::where('class_id', $class->id)->pluck('user_id');
             $avgSugar = SugarConsumption::whereIn('user_id', $studentIds)
                 ->whereDate('consumed_at', Carbon::today())
@@ -277,10 +277,10 @@ class DashboardController extends Controller
             
             return [
                 'name' => $class->name,
-                'school' => $class->school->name ?? '-',
+                'school' => 'Master Kelas',
                 'student_count' => count($studentIds),
-                'avg_sugar_today' => round($avgSugar, 1),
-                'avg_points' => round($avgPoints, 0),
+                'avg_sugar_today' => round((float) $avgSugar, 1),
+                'avg_points' => round((float) $avgPoints, 0),
             ];
         });
 
