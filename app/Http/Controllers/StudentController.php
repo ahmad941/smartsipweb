@@ -40,10 +40,8 @@ class StudentController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(15);
 
-        $schools = School::with('schoolClasses')->get();
-        $classes = $schoolFilter 
-            ? SchoolClass::where('school_id', $schoolFilter)->get() 
-            : SchoolClass::all();
+        $schools = School::all();
+        $classes = SchoolClass::all();
 
         return view('admin.students.index', compact('students', 'schools', 'classes', 'search', 'schoolFilter', 'classFilter', 'genderFilter'));
     }
