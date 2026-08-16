@@ -6,30 +6,56 @@
 
 chdir(dirname(__DIR__));
 
-echo "<!DOCTYPE html><html lang='id'><head><meta charset='UTF-8'><title>SmartSip Helper</title>";
-echo "<style>body{font-family:sans-serif;background:#0f172a;color:#f8fafc;padding:30px;line-height:1.6;} pre{background:#1e293b;padding:15px;border-radius:10px;color:#38bdf8;border:1px solid #334155;}</style></head><body>";
+$action = $_GET['action'] ?? null;
+
+echo "<!DOCTYPE html><html lang='id'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>SmartSip Artisan Runner</title>";
+echo "<style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 30px; line-height: 1.6; max-width: 900px; margin: 0 auto; }
+    h2 { color: #38bdf8; border-bottom: 2px solid #334155; padding-bottom: 10px; }
+    .btn { display: inline-block; padding: 10px 18px; margin: 5px 5px 5px 0; border-radius: 8px; text-decoration: none; font-weight: bold; color: white; cursor: pointer; border: none; }
+    .btn-danger { background: #ef4444; } .btn-danger:hover { background: #dc2626; }
+    .btn-primary { background: #3b82f6; } .btn-primary:hover { background: #2563eb; }
+    .btn-success { background: #10b981; } .btn-success:hover { background: #059669; }
+    pre { background: #1e293b; padding: 15px; border-radius: 10px; color: #38bdf8; border: 1px solid #334155; overflow-x: auto; white-space: pre-wrap; }
+    .alert { background: #7f1d1d; color: #fca5a5; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #991b1b; }
+</style></head><body>";
 
 echo "<h2>🚀 SmartSip Artisan Command Runner</h2>";
+echo "<div class='alert'>⚠️ <strong>PENTING:</strong> Segera hapus file ini (<code>artisan-runner.php</code>) dari server hosting setelah selesai menggunakannya!</div>";
 
-echo "<h3>1. Storage Link</h3><pre>";
-echo shell_exec('php artisan storage:link 2>&1') ?: 'storage:link finished.';
-echo "</pre>";
+echo "<div style='margin-bottom: 25px;'>";
+echo "<a href='?action=clear_cache' class='btn btn-primary'>⚡ 1. Clear Cache & Optimize</a> ";
+echo "<a href='?action=migrate_fresh' class='btn btn-danger' onclick='return confirm(\"APAKAH ANDA YAKIN? Ini akan MENGOSONGKAN DATABASE (kecuali Master Data & Admin)?\");'>🔥 2. Reset & Seed Database (Go Live)</a> ";
+echo "<a href='?action=db_seed' class='btn btn-success'>🌱 3. Run Seeder Only (db:seed)</a>";
+echo "</div>";
 
-echo "<h3>2. Optimize & Clear All Cache</h3><pre>";
-echo shell_exec('php artisan optimize:clear 2>&1') ?: 'optimize:clear finished.';
-echo "</pre>";
+if ($action === 'migrate_fresh') {
+    echo "<h3>🔥 Executing: php artisan migrate:fresh --seed --force</h3><pre>";
+    echo shell_exec('php artisan migrate:fresh --seed --force 2>&1') ?: 'Finished.';
+    echo "</pre>";
+} elseif ($action === 'db_seed') {
+    echo "<h3>🌱 Executing: php artisan db:seed --force</h3><pre>";
+    echo shell_exec('php artisan db:seed --force 2>&1') ?: 'Finished.';
+    echo "</pre>";
+} elseif ($action === 'clear_cache') {
+    echo "<h3>1. Storage Link</h3><pre>";
+    echo shell_exec('php artisan storage:link 2>&1') ?: 'storage:link finished.';
+    echo "</pre>";
 
-echo "<h3>3. Route Cache & Clear</h3><pre>";
-echo shell_exec('php artisan route:clear 2>&1') ?: 'route:clear finished.';
-echo "\n";
-echo shell_exec('php artisan route:cache 2>&1') ?: 'route:cache finished.';
-echo "</pre>";
+    echo "<h3>2. Optimize & Clear Cache</h3><pre>";
+    echo shell_exec('php artisan optimize:clear 2>&1') ?: 'optimize:clear finished.';
+    echo "</pre>";
 
+    echo "<h3>3. Route Cache</h3><pre>";
+    echo shell_exec('php artisan route:cache 2>&1') ?: 'route:cache finished.';
+    echo "</pre>";
 
+    echo "<h3>4. View Cache</h3><pre>";
+    echo shell_exec('php artisan view:cache 2>&1') ?: 'view:cache finished.';
+    echo "</pre>";
+} else {
+    echo "<p>Silakan klik salah satu tombol di atas untuk menjalankan perintah Artisan.</p>";
+}
 
-echo "<h3>4. View Cache</h3><pre>";
-echo shell_exec('php artisan view:cache 2>&1') ?: 'view:cache finished.';
-echo "</pre>";
-
-echo "<p style='color:#ef4444;font-weight:bold;'>⚠️ PENTING: Segera hapus file ini (artisan-runner.php) dari server hosting setelah selesai!</p>";
 echo "</body></html>";
+
