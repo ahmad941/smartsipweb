@@ -253,9 +253,9 @@ class AdminExportController extends Controller
                 '"' . str_replace('"', '""', $l->user->student->nickname ?? '-') . '"',
                 '"' . str_replace('"', '""', $l->user->student->school->name ?? '-') . '"',
                 '"' . str_replace('"', '""', $l->beverage->name ?? '-') . '"',
-                $l->portion_ml ?? 0,
+                $l->volume_ml ?? $l->portion_ml ?? 0,
                 $l->total_sugar_grams ?? 0,
-                $l->consumed_at ? $l->consumed_at->format('Y-m-d H:i:s') : '-'
+                $l->consumed_at ? \Carbon\Carbon::parse($l->consumed_at)->format('Y-m-d H:i:s') : '-'
             ];
             $csvData[] = implode(',', $row);
         }

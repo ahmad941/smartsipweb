@@ -10,6 +10,10 @@ class SugarConsumption extends Model
         'user_id', 'beverage_id', 'volume_ml', 'total_sugar_grams', 'consumed_at'
     ];
 
+    protected $casts = [
+        'consumed_at' => 'datetime',
+    ];
+
     // Relasi Balik ke Pengguna (Siapa yang minum)
     public function user()
     {
