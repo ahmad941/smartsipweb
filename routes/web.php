@@ -175,4 +175,29 @@ Route::get('/panduan/{role}', function ($role) {
     abort(404);
 })->name('panduan.download');
 
+// Helper Runner Routes for Hosting Maintenance
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    \Illuminate\Support\Facades\Artisan::call('route:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Seluruh cache (route, config, view, cache) berhasil dibersihkan!',
+        'timestamp' => now()->toDateTimeString()
+    ]);
+});
+
+Route::get('/git-pull', function () {
+    $output = shell_exec('git pull origin main 2>&1');
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    return response()->json([
+        'status' => 'success',
+        'git_output' => $output,
+        'message' => 'Git pull & clear cache selesai!',
+        'timestamp' => now()->toDateTimeString()
+    ]);
+});
+
 require __DIR__.'/auth.php';
