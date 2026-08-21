@@ -137,7 +137,7 @@
 
                         <div>
                             <label for="institution" class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Institusi / Universitas</label>
-                            <input type="text" id="institution" name="institution" placeholder="Cth: Universitas Singaperbangsa"
+                            <input type="text" id="institution" name="institution" placeholder="Cth: Universitas Horizon Indonesia"
                                 class="bg-slate-50 border border-slate-200 rounded-xl text-slate-850 h-11 px-4 w-full text-xs focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white" />
                         </div>
 
