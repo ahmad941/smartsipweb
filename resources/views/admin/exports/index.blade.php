@@ -46,18 +46,18 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 min-w-[220px]">
-                        <a href="{{ route('admin.exports.final_statistics') }}" class="w-full py-3 px-5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black rounded-2xl text-xs transition-all shadow-lg hover:shadow-amber-500/20 active:scale-95 text-center flex items-center justify-center gap-2">
+                        <a href="{{ Route::has('admin.exports.final_statistics') ? route('admin.exports.final_statistics') : url('/admin/exports/final-statistics') }}" class="w-full py-3 px-5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black rounded-2xl text-xs transition-all shadow-lg hover:shadow-amber-500/20 active:scale-95 text-center flex items-center justify-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                             Unduh Rekap Semua Fase
                         </a>
                         <div class="grid grid-cols-3 gap-1.5">
-                            <a href="{{ route('admin.exports.final_statistics', ['phase' => 'T0']) }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
+                            <a href="{{ Route::has('admin.exports.final_statistics') ? route('admin.exports.final_statistics', ['phase' => 'T0']) : url('/admin/exports/final-statistics?phase=T0') }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
                                 Fase T0
                             </a>
-                            <a href="{{ route('admin.exports.final_statistics', ['phase' => 'T1']) }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
+                            <a href="{{ Route::has('admin.exports.final_statistics') ? route('admin.exports.final_statistics', ['phase' => 'T1']) : url('/admin/exports/final-statistics?phase=T1') }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
                                 Fase T1
                             </a>
-                            <a href="{{ route('admin.exports.final_statistics', ['phase' => 'T2']) }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
+                            <a href="{{ Route::has('admin.exports.final_statistics') ? route('admin.exports.final_statistics', ['phase' => 'T2']) : url('/admin/exports/final-statistics?phase=T2') }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
                                 Fase T2
                             </a>
                         </div>
