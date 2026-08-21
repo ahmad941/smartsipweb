@@ -120,14 +120,29 @@ class DashboardController extends Controller
             ->whereDate('consumed_at', Carbon::today())
             ->avg('total_sugar_grams') ?? 0;
 
-        // Persentase siswa yang melebihi batas WHO (> 25g) hari ini
-        $studentsOverLimitCount = SugarConsumption::whereIn('user_id', $studentIds)
-            ->whereDate('consumed_at', Carbon::today())
+        // Persentase siswa yang melebihi batas WHO (> 25g/hari) berdasarkan data 7 hari terakhir (mingguan)
+        $startDate = Carbon::now()->subDays(6)->startOfDay();
+        $endDate = Carbon::now()->endOfDay();
+
+        $overLimitUserIdsFromLogs = SugarConsumption::whereIn('user_id', $studentIds)
+            ->whereBetween('consumed_at', [$startDate, $endDate])
             ->select('user_id')
             ->groupBy('user_id')
-            ->havingRaw('SUM(total_sugar_grams) > 25')
+            ->havingRaw('SUM(total_sugar_grams) / 7 > 25')
+            ->pluck('user_id')
+            ->toArray();
+
+        $teacherStudentDbIds = Student::whereIn('user_id', $studentIds)->pluck('id');
+        $overLimitUserIdsFromFFQ = \App\Models\FFQResponse::whereIn('student_id', $teacherStudentDbIds)
+            ->where('total_daily_sugar_grams', '>', 25)
+            ->with('student')
             ->get()
-            ->count();
+            ->pluck('student.user_id')
+            ->filter()
+            ->toArray();
+
+        $allOverLimitUserIds = array_unique(array_merge($overLimitUserIdsFromLogs, $overLimitUserIdsFromFFQ));
+        $studentsOverLimitCount = count($allOverLimitUserIds);
         
         $percentOverLimit = $totalStudents > 0 ? ($studentsOverLimitCount / $totalStudents) * 100 : 0;
 
@@ -235,12 +250,26 @@ class DashboardController extends Controller
         $avgSugarToday = SugarConsumption::whereDate('consumed_at', Carbon::today())
             ->avg('total_sugar_grams') ?? 0;
 
-        $studentsOverLimitCount = SugarConsumption::whereDate('consumed_at', Carbon::today())
+        // Persentase siswa yang melebihi batas WHO (> 25g/hari) berdasarkan data 7 hari terakhir (mingguan)
+        $startDate = Carbon::now()->subDays(6)->startOfDay();
+        $endDate = Carbon::now()->endOfDay();
+
+        $overLimitUserIdsFromLogs = SugarConsumption::whereBetween('consumed_at', [$startDate, $endDate])
             ->select('user_id')
             ->groupBy('user_id')
-            ->havingRaw('SUM(total_sugar_grams) > 25')
+            ->havingRaw('SUM(total_sugar_grams) / 7 > 25')
+            ->pluck('user_id')
+            ->toArray();
+
+        $overLimitUserIdsFromFFQ = \App\Models\FFQResponse::where('total_daily_sugar_grams', '>', 25)
+            ->with('student')
             ->get()
-            ->count();
+            ->pluck('student.user_id')
+            ->filter()
+            ->toArray();
+
+        $allOverLimitUserIds = array_unique(array_merge($overLimitUserIdsFromLogs, $overLimitUserIdsFromFFQ));
+        $studentsOverLimitCount = count($allOverLimitUserIds);
         
         $percentOverLimit = $totalStudents > 0 ? ($studentsOverLimitCount / $totalStudents) * 100 : 0;
 
@@ -309,6 +338,24 @@ class DashboardController extends Controller
         $underLimitCount = max(0, $totalStudents - $studentsOverLimitCount);
         $distributionData = [$underLimitCount, $studentsOverLimitCount];
 
+        // 5. Data Profil Psikologis TPB (Theory of Planned Behavior) 4 Konstruk
+        $tpbConstructsKeys = ['attitude', 'subjective_norm', 'pbc', 'intention'];
+        $tpbScores = [];
+        foreach ($tpbConstructsKeys as $construct) {
+            $avg = TpbResponse::whereHas('question', function($q) use ($construct) {
+                $q->where('construct_type', $construct);
+            })->avg('score');
+
+            $tpbScores[$construct] = $avg ? round((float)$avg, 2) : 0;
+        }
+
+        $tpbRadarData = [
+            $tpbScores['attitude'],
+            $tpbScores['subjective_norm'],
+            $tpbScores['pbc'],
+            $tpbScores['intention'],
+        ];
+
         return view('dashboard.admin', compact(
             'stats',
             'totalStudents',
@@ -319,7 +366,9 @@ class DashboardController extends Controller
             'chartData',
             'distributionData',
             'classes',
-            'studentsList'
+            'studentsList',
+            'tpbScores',
+            'tpbRadarData'
         ));
     }
 }

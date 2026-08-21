@@ -37,67 +37,157 @@
                 </div>
             </div>
 
-            <!-- Analytics Summary Metrics Cards Grid (PRIORITY INFO TOP) -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <!-- Card 1: Siswa Terpantau -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-blue-500">
-                    <div>
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Siswa Terpantau</span>
-                        <h4 class="text-2xl font-extrabold text-slate-800 mt-1.5">{{ $totalStudents }}</h4>
-                    </div>
-                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Remaja responden aktif</span>
-                </div>
-
-                <!-- Card 2: Average Sugar Today -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-emerald-500">
-                    <div>
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Rerata Gula Hari Ini</span>
-                        <h4 class="text-2xl font-extrabold text-slate-800 mt-1.5">{{ number_format($avgSugarToday, 1) }}g</h4>
-                    </div>
-                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Gram per siswa</span>
-                </div>
-
-                <!-- Card 3: Over WHO Limit % -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-rose-500">
-                    <div>
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Melebihi Batas WHO (>25g)</span>
-                        <h4 class="text-2xl font-extrabold text-rose-500 mt-1.5">{{ number_format($percentOverLimit, 1) }}%</h4>
-                    </div>
-                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Dari total responden</span>
-                </div>
-
-                <!-- Card 4: Avg Points -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-amber-500">
-                    <div>
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Rerata Poin Gamifikasi</span>
-                        <h4 class="text-2xl font-extrabold text-amber-500 mt-1.5">{{ number_format($avgPoints, 0) }}</h4>
-                    </div>
-                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Poin terkumpul</span>
-                </div>
-            </div>
-
             <!-- Interactive Charts Section Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <!-- Chart 1: Line Chart 7 Days Trend (Col 8) -->
                 <div class="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                    <h3 class="text-base font-extrabold text-slate-800 mb-6">Tren Konsumsi Gula Rata-rata Siswa (7 Hari Terakhir)</h3>
+                    <div class="flex items-center justify-between gap-2 mb-6">
+                        <h3 class="text-sm font-black text-slate-800 tracking-tight flex items-center gap-2">
+                            <span>📈</span> Tren Konsumsi Gula Rata-rata Siswa (7 Hari Terakhir)
+                        </h3>
+                        <span class="px-2.5 py-1 bg-slate-100 text-slate-500 rounded-lg text-[10px] font-bold">Rerata Gram (g)</span>
+                    </div>
                     <div class="w-full h-[300px] relative">
                         <canvas id="avgSugarChartAdmin"></canvas>
                     </div>
                 </div>
 
                 <!-- Chart 2: Doughnut Chart WHO Limit Compliance (Col 4) -->
-                <div class="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                <div class="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-all">
                     <div>
-                        <h3 class="text-base font-extrabold text-slate-800 mb-2">Proporsi Kepatuhan Gula</h3>
-                        <p class="text-xs text-slate-400 mb-4">Persentase siswa aman (<=25g) vs berisiko (>25g WHO).</p>
+                        <div class="flex items-center justify-between gap-2 mb-1.5">
+                            <h3 class="text-sm font-black text-slate-800 tracking-tight flex items-center gap-2">
+                                <span>🍩</span> Proporsi Kepatuhan Gula
+                            </h3>
+                            <span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 rounded-lg text-[9px] font-extrabold uppercase tracking-wider">
+                                7 Hari Terakhir
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Perbandingan tingkat asupan <span class="font-bold text-emerald-600">Aman (≤25g/hari)</span> vs <span class="font-bold text-rose-500">Berisiko (>25g WHO)</span>.
+                        </p>
                     </div>
-                    <div class="w-full h-[220px] relative flex items-center justify-center">
+
+                    <!-- Doughnut Chart Canvas with Center Badge -->
+                    <div class="w-full h-[190px] relative flex items-center justify-center my-2">
                         <canvas id="whoDistributionChartAdmin"></canvas>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                            <span class="text-3xl font-black text-slate-800 tracking-tighter leading-none">{{ number_format(100 - $percentOverLimit, 1) }}%</span>
+                            <span class="mt-1 px-2.5 py-0.5 text-[9px] font-extrabold text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-full uppercase tracking-wider">
+                                Siswa Aman
+                            </span>
+                        </div>
                     </div>
-                    <div class="flex justify-around items-center border-t border-slate-100 pt-3 mt-3 text-2xs font-bold">
-                        <span class="flex items-center gap-1.5 text-emerald-600"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Aman (<=25g)</span>
-                        <span class="flex items-center gap-1.5 text-rose-500"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Melebihi (>25g)</span>
+
+                    <!-- Informative Legend Stat Grid -->
+                    <div class="grid grid-cols-2 gap-2.5 border-t border-slate-100 pt-3 mt-1">
+                        <div class="bg-emerald-50/60 border border-emerald-100/80 rounded-xl p-2.5 flex flex-col justify-between">
+                            <div class="flex items-center gap-1.5 text-emerald-700 text-[10px] font-bold">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                                Aman (≤25g/hari)
+                            </div>
+                            <div class="mt-1.5 flex items-baseline justify-between">
+                                <span class="text-lg font-black text-emerald-600 tracking-tight">{{ number_format(100 - $percentOverLimit, 1) }}%</span>
+                                <span class="text-[9px] font-bold text-slate-400">Rerata WHO</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-50/60 border border-rose-100/80 rounded-xl p-2.5 flex flex-col justify-between">
+                            <div class="flex items-center gap-1.5 text-rose-700 text-[10px] font-bold">
+                                <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
+                                Melebihi (>25g/hari)
+                            </div>
+                            <div class="mt-1.5 flex items-baseline justify-between">
+                                <span class="text-lg font-black text-rose-600 tracking-tight">{{ number_format($percentOverLimit, 1) }}%</span>
+                                <span class="text-[9px] font-bold text-slate-400">Risiko Tinggi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-[9px] font-semibold text-slate-400 italic text-center mt-2.5">
+                        *Data dihitung dari rerata konsumsi harian 7 hari terakhir (FFQ & Log).
+                    </p>
+                </div>
+            </div>
+
+            <!-- TPB Psychological Radar Profile Section Grid -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 bg-purple-500/10 text-purple-600 border border-purple-500/20 rounded-xl text-2xs font-extrabold tracking-wider uppercase">
+                                Kerangka Teori TPB (Ajzen, 1991)
+                            </span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-500 rounded-xl text-2xs font-bold">
+                                Skala Likert 1 - 5
+                            </span>
+                        </div>
+                        <h3 class="text-base font-extrabold text-slate-800 mt-2 flex items-center gap-2">
+                            🧠 Profil Psikologis Riset Siswa (4 Konstruk TPB)
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Rata-rata skor konstruk Sikap (Attitude), Norma Subjektif, Kontrol Diri (PBC), dan Niat (Intention) siswa.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Radar Chart (Col 5) -->
+                    <div class="lg:col-span-5 w-full h-[320px] relative flex items-center justify-center bg-slate-50/50 rounded-2xl p-4 border border-slate-100">
+                        <canvas id="tpbRadarChartAdmin"></canvas>
+                    </div>
+
+                    <!-- Construct Breakdown Cards Grid (Col 7) -->
+                    <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- 1. Attitude -->
+                        <div class="bg-sky-50/50 border border-sky-150/80 rounded-2xl p-4 space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-extrabold text-sky-600 uppercase tracking-wider block">Attitude (Sikap)</span>
+                                <span class="text-xs font-black text-sky-700 bg-sky-100 px-2 py-0.5 rounded-lg">{{ number_format($tpbScores['attitude'] ?? 0, 2) }} / 5.0</span>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-800">Pandangan & Kepercayaan Siswa</h4>
+                            <p class="text-[11px] text-slate-500 leading-snug">Sejauh mana siswa menilai positif kebiasaan membatasi konsumsi minuman manis.</p>
+                            <div class="w-full bg-sky-200/50 rounded-full h-2 overflow-hidden mt-1">
+                                <div class="bg-sky-500 h-2 rounded-full transition-all duration-500" style="width: {{ min(100, (($tpbScores['attitude'] ?? 0) / 5) * 100) }}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Subjective Norm -->
+                        <div class="bg-emerald-50/50 border border-emerald-150/80 rounded-2xl p-4 space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider block">Subjective Norm (Sosial)</span>
+                                <span class="text-xs font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-lg">{{ number_format($tpbScores['subjective_norm'] ?? 0, 2) }} / 5.0</span>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-800">Dukungan Lingkungan & Teman</h4>
+                            <p class="text-[11px] text-slate-500 leading-snug">Pengaruh sosial dari teman sebaya, keluarga, dan guru dalam memilih air putih.</p>
+                            <div class="w-full bg-emerald-200/50 rounded-full h-2 overflow-hidden mt-1">
+                                <div class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: {{ min(100, (($tpbScores['subjective_norm'] ?? 0) / 5) * 100) }}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 3. PBC -->
+                        <div class="bg-amber-50/50 border border-amber-150/80 rounded-2xl p-4 space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-extrabold text-amber-600 uppercase tracking-wider block">Perceived Control (PBC)</span>
+                                <span class="text-xs font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-lg">{{ number_format($tpbScores['pbc'] ?? 0, 2) }} / 5.0</span>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-800">Efikasi & Kontrol Diri</h4>
+                            <p class="text-[11px] text-slate-500 leading-snug">Keyakinan siswa terhadap kemampuan dirinya untuk menolak minuman manis.</p>
+                            <div class="w-full bg-amber-200/50 rounded-full h-2 overflow-hidden mt-1">
+                                <div class="bg-amber-500 h-2 rounded-full transition-all duration-500" style="width: {{ min(100, (($tpbScores['pbc'] ?? 0) / 5) * 100) }}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Intention -->
+                        <div class="bg-purple-50/50 border border-purple-150/80 rounded-2xl p-4 space-y-2">
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-extrabold text-purple-600 uppercase tracking-wider block">Intention (Niat)</span>
+                                <span class="text-xs font-black text-purple-700 bg-purple-100 px-2 py-0.5 rounded-lg">{{ number_format($tpbScores['intention'] ?? 0, 2) }} / 5.0</span>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-800">Komitmen Perubahan Perilaku</h4>
+                            <p class="text-[11px] text-slate-500 leading-snug">Niat dan kesiapan tindakan nyata siswa untuk mengurangi gula dalam kehidupan sehari-hari.</p>
+                            <div class="w-full bg-purple-200/50 rounded-full h-2 overflow-hidden mt-1">
+                                <div class="bg-purple-500 h-2 rounded-full transition-all duration-500" style="width: {{ min(100, (($tpbScores['intention'] ?? 0) / 5) * 100) }}%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,7 +282,46 @@
                 </div>
             </div>
 
-            <!-- Master System Data Overview (PLACED AT THE VERY BOTTOM AS NON-URGENT INFO) -->
+            <!-- Analytics Summary Metrics Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Card 1: Siswa Terpantau -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-blue-500">
+                    <div>
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Siswa Terpantau</span>
+                        <h4 class="text-2xl font-extrabold text-slate-800 mt-1.5">{{ $totalStudents }}</h4>
+                    </div>
+                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Remaja responden aktif</span>
+                </div>
+
+                <!-- Card 2: Average Sugar Today -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-emerald-500">
+                    <div>
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Rerata Gula Hari Ini</span>
+                        <h4 class="text-2xl font-extrabold text-slate-800 mt-1.5">{{ number_format($avgSugarToday, 1) }}g</h4>
+                    </div>
+                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Gram per siswa</span>
+                </div>
+
+                <!-- Card 3: Over WHO Limit % -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-rose-500">
+                    <div>
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Melebihi Batas WHO (>25g/hari)</span>
+                        <h4 class="text-2xl font-extrabold text-rose-500 mt-1.5">{{ number_format($percentOverLimit, 1) }}%</h4>
+                    </div>
+                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Dari total responden</span>
+                </div>
+
+                <!-- Card 4: Avg Points -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-amber-500">
+                    <div>
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Rerata Poin Gamifikasi</span>
+                        <h4 class="text-2xl font-extrabold text-amber-500 mt-1.5">{{ number_format($avgPoints, 0) }}</h4>
+                    </div>
+                    <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Poin terkumpul</span>
+                </div>
+            </div>
+
+
             <div class="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-4">
                 <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                     <div>
@@ -323,7 +452,7 @@
                 new Chart(ctxDoughnut, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Aman (<=25g)', 'Melebihi (>25g)'],
+                        labels: ['Aman (<=25g/hari)', 'Melebihi (>25g/hari)'],
                         datasets: [{
                             data: distributionData,
                             backgroundColor: ['#10b981', '#f43f5e'],
@@ -336,7 +465,98 @@
                         maintainAspectRatio: false,
                         cutout: '72%',
                         plugins: {
-                            legend: { display: false }
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) + '%' : '0%';
+                                        return `${label}: ${value} siswa (${percentage})`;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    plugins: [{
+                        id: 'doughnutSlicePercentages',
+                        afterDraw(chart) {
+                            const { ctx, data } = chart;
+                            const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            if (total === 0) return;
+
+                            chart.getDatasetMeta(0).data.forEach((element, index) => {
+                                const value = data.datasets[0].data[index];
+                                if (value === 0) return;
+                                const pctVal = ((value / total) * 100).toFixed(1) + '%';
+                                
+                                const pos = element.tooltipPosition();
+                                ctx.save();
+                                ctx.fillStyle = '#ffffff';
+                                ctx.font = 'bold 11px sans-serif';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                                ctx.shadowBlur = 3;
+                                ctx.fillText(pctVal, pos.x, pos.y);
+                                ctx.restore();
+                            });
+                        }
+                    }]
+                });
+
+                // 3. Radar Chart TPB 4 Constructs
+                const ctxRadar = document.getElementById('tpbRadarChartAdmin').getContext('2d');
+                const tpbRadarDataPoints = @json($tpbRadarData);
+
+                new Chart(ctxRadar, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Attitude (Sikap)', 'Subjective Norm (Sosial)', 'PBC (Kontrol Diri)', 'Intention (Niat)'],
+                        datasets: [{
+                            label: 'Rerata Skor TPB',
+                            data: tpbRadarDataPoints,
+                            backgroundColor: 'rgba(147, 51, 234, 0.22)',
+                            borderColor: '#9333ea',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#ffffff',
+                            pointBorderColor: '#9333ea',
+                            pointBorderWidth: 2.5,
+                            pointRadius: 4.5,
+                            pointHoverRadius: 6.5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                min: 0,
+                                max: 5,
+                                ticks: {
+                                    stepSize: 1,
+                                    color: '#94a3b8',
+                                    font: { size: 9, weight: 'bold' },
+                                    backdropColor: 'transparent'
+                                },
+                                grid: { color: 'rgba(226, 232, 240, 0.8)' },
+                                angleLines: { color: 'rgba(226, 232, 240, 0.8)' },
+                                pointLabels: {
+                                    color: '#334155',
+                                    font: { size: 10, weight: 'bold' }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw.toFixed(2)} / 5.0`;
+                                    }
+                                }
+                            }
                         }
                     }
                 });

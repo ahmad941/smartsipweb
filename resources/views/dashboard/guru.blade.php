@@ -48,7 +48,7 @@
                 <!-- Card 3: Over WHO Limit % -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden flex flex-col justify-between h-28 border-t-4 border-t-rose-500">
                     <div>
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Melebihi Batas WHO (>25g)</span>
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Melebihi Batas WHO (>25g/hari)</span>
                         <h4 class="text-2xl font-extrabold text-rose-500 mt-1.5">{{ number_format($percentOverLimit, 1) }}%</h4>
                     </div>
                     <span class="text-[9px] font-bold text-slate-400 block border-t border-slate-100 pt-1.5">Dari total responden</span>
