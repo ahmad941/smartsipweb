@@ -24,6 +24,47 @@
                 </div>
             </div>
 
+            <!-- Featured: Export Perhitungan Final Kuesioner & Statistik Deskriptif (Dengan Rumus) -->
+            <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 text-white shadow-2xl space-y-6 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                    <div class="space-y-3 max-w-3xl">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full text-2xs font-black uppercase tracking-wider flex items-center gap-1.5">
+                                ⭐ EKSPOR UTAMA PENELITIAN
+                            </span>
+                            <span class="px-3 py-1 bg-indigo-400/20 text-indigo-200 border border-indigo-400/30 rounded-full text-2xs font-extrabold uppercase tracking-wider">
+                                METODOLOGI & RUMUS LENGKAP
+                            </span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+                            Hasil Perhitungan Final Kuesioner & Statistik Deskriptif
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                            Berkas CSV komprehensif memuat **Ringkasan Statistik Deskriptif** ($N$, Mean, Std Dev, Min, Max, Persentase Frekuensi Kategori), **Hasil Kalkulasi Final Per Responden** (IMT, FFQ Gula g/hari, Pengetahuan, Konstruk TPB, SUS), serta **Dokumentasi Rumus & Standar Baku** (Permenkes RI, WHO, Arikunto, Ajzen, Brooke).
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 min-w-[220px]">
+                        <a href="{{ route('admin.exports.final_statistics') }}" class="w-full py-3 px-5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black rounded-2xl text-xs transition-all shadow-lg hover:shadow-amber-500/20 active:scale-95 text-center flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Unduh Rekap Semua Fase
+                        </a>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <a href="{{ route('admin.exports.final_statistics', ['phase' => 'T0']) }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
+                                Fase T0
+                            </a>
+                            <a href="{{ route('admin.exports.final_statistics', ['phase' => 'T1']) }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
+                                Fase T1
+                            </a>
+                            <a href="{{ route('admin.exports.final_statistics', ['phase' => 'T2']) }}" class="py-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-2xs font-bold rounded-xl text-center transition-all">
+                                Fase T2
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Export Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 

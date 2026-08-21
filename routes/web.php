@@ -156,6 +156,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/exports/knowledge', [AdminExportController::class, 'exportKnowledge'])->name('admin.exports.knowledge');
     Route::get('/exports/usability', [AdminExportController::class, 'exportUsability'])->name('admin.exports.usability');
     Route::get('/exports/sugar-logs', [AdminExportController::class, 'exportSugarLogs'])->name('admin.exports.sugar_logs');
+    Route::get('/exports/final-statistics', [AdminExportController::class, 'exportFinalStatistics'])->name('admin.exports.final_statistics');
 });
 
 Route::get('/panduan/{role}', function ($role) {
